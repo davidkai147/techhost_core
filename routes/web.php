@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/cms/{any?}', 'HomeController@app')->where('any', '.*');
+
+Route::get('/{any}', 'HomeController@redirect');
+
+Route::get('', 'HomeController@redirectSignIn');

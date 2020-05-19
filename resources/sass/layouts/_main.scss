@@ -1,0 +1,122 @@
+//.skin-blue {
+//  .pagination {
+//    margin: 0;
+//  }
+//}
+//
+//.content-wrapper {
+//  min-height: calc(100vh - 101px) !important;
+//}
+//
+//.mr-5 {
+//  margin-right: 5px;
+//}
+//
+//.show {
+//  display: block;
+//}
+//
+//.disabled {
+//  pointer-events: none;
+//}
+//
+//.no-result {
+//  background: #fefefe;
+//  font-size: 30px;
+//  padding: 50px;
+//  color: #ccc;
+//}
+//
+//.has-block {
+//  margin: 0;
+//  text-align: center;
+//  span {
+//    margin: 0;
+//  }
+//}
+.no-result {
+    background: #fefefe;
+    font-size: 30px;
+    padding: 50px;
+    color: #ccc;
+}
+
+.start-date {
+    margin-bottom: 10px;
+}
+
+.box-search .form-control {
+    margin-bottom: 10px;
+}
+
+.long-and-truncated {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: initial;
+    margin-bottom: 5px !important;
+}
+
+.w-170 {
+    width: 170px;
+}
+
+.position-relative {
+    position: relative !important;
+}
+
+.content-wrapper {
+    background-color: #ffffff;
+    @media (min-width: 768px) {
+        margin-left: 189px;
+    }
+
+    .content-header {
+        h3 {
+            margin: 0;
+            line-height: 28px;
+            font-size: 20px;
+            color: #5F6368;
+        }
+    }
+}
+
+.box {
+    border-radius: 5px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.16);
+    border: 1px solid #F0F0F0 !important;
+
+    .box-header {
+        border-bottom: 1px solid #F0F0F0;
+        padding: 17px 12px 14px 15px;
+    }
+
+    .box-body {
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 2px;
+    }
+
+    .inner {
+        padding: 40px 15px 45px;
+        border-bottom: 1px solid #F0F0F0;
+
+        &:last-child {
+            border: none;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 25px;
+            margin: 0;
+            color: #5F6368;
+        }
+
+        h2 {
+            font-size: 30px;
+            line-height: 43px;
+            color: #1A73E8;
+            font-weight: bold;
+            margin: 0;
+        }
+    }
+}

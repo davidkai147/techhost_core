@@ -5,28 +5,49 @@
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
-            <p class="login-box-msg">ID及びパスワードを入力し、ログインを押してください</p>
+            <p class="login-box-msg">Please input your email and password</p>
 
             <ValidationObserver v-slot="{ handleSubmit }">
-            <form @submit.prevent="handleSubmit(submit)">
-                <ValidationProvider name="ログインID" rules="required|min:3|max:100" v-slot="{ errors }">
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="login_id"
-                        name="ログインID"
-                        v-model="inputData.login_id">
-                    <span>{{ errors[0] }}</span>
-                </ValidationProvider>
+                <form @submit.prevent="handleSubmit(submit)">
+                    <ValidationProvider name="ログインID" rules="required|min:3|max:100" v-slot="{ errors }">
+                        <div class="form-group has-feedback" :class="{'has-error': errors[0]}">
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="login_id"
+                                placeholder="example@gmail.com"
+                                name="ログインID"
+                                v-model="inputData.login_id">
+                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                            <span v-show="errors[0]" :class="{'help-block': errors[0] }">
+                                {{ errors[0] }}
+                            </span>
+                        </div>
+                    </ValidationProvider>
 
+                    <ValidationProvider name="ログインパスワード" rules="required|min:3|max:100" v-slot="{ errors }">
+                        <div class="form-group has-feedback" :class="{'has-error': errors[0]}">
+                            <input
+                                type="password"
+                                class="form-control"
+                                id="login_pwd"
+                                placeholder="Please input password"
+                                name="ログインパスワード"
+                                v-model="inputData.login_pwd">
+                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                            <span v-show="errors[0]" :class="{'help-block': errors[0] }">
+                                {{ errors[0] }}
+                            </span>
+                        </div>
+                    </ValidationProvider>
 
-                <div class="row">
-                    <div class="col-xs-12">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">ログイン</button>
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Login</button>
+                    <div class="row">
+                        <div class="col-xs-12">
+                        </div>
+                        <!-- /.col -->
                     </div>
-                    <!-- /.col -->
-                </div>
-            </form>
+                </form>
             </ValidationObserver>
         </div>
         <!-- /.login-box-body -->

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Account;
 use App\Models\Admin;
+use App\Models\User;
 
 class AuthService
 {
@@ -16,27 +17,29 @@ class AuthService
 
     public function getGuard()
     {
-        if (auth('admin')->check()) {
-            return 'admin';
-        } else {
-            return 'account';
-        }
+//        if (auth('admin')->check()) {
+//            return 'admin';
+//        } else {
+//            return 'account';
+//        }
+        return 'web';
     }
 
-    public function getAuth($login_id, $getGuard = null)
+    public function getAuth($email, $getGuard = null)
     {
         $guard = '';
 
         // check with Admin table
-        $auth = Admin::query()->where('login_id', $login_id)->first();
-        if (empty($auth)) {
-            $auth = Account::query()->where('login_id', $login_id)->first();
-            if (! empty($auth)) {
-                $guard = 'account';
-            }
-        } else {
-            $guard = 'admin';
-        }
+        $auth = User::query()->where('email', $email)->first();
+//        if (empty($auth)) {
+//            $auth = Account::query()->where('login_id', $login_id)->first();
+//            if (! empty($auth)) {
+//                $guard = 'account';
+//            }
+//        } else {
+//            $guard = 'admin';
+//        }
+        $guard = 'web';
 
         return ! empty($getGuard) ? [$auth, $guard] : $auth;
     }

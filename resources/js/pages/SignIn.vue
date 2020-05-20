@@ -14,10 +14,10 @@
                             <input
                                 type="text"
                                 class="form-control"
-                                id="login_id"
+                                id="email"
                                 placeholder="example@gmail.com"
                                 name="ログインID"
-                                v-model="inputData.login_id">
+                                v-model="inputData.email">
                             <span class="fa fa-user form-control-feedback"></span>
                             <span v-show="errors[0]" :class="{'help-block': errors[0] }">
                                 {{ errors[0] }}
@@ -30,10 +30,10 @@
                             <input
                                 type="password"
                                 class="form-control"
-                                id="login_pwd"
+                                id="password"
                                 placeholder="Please input password"
                                 name="ログインパスワード"
-                                v-model="inputData.login_pwd">
+                                v-model="inputData.password">
                             <span class="fa fa-user form-control-feedback"></span>
                             <span v-show="errors[0]" :class="{'help-block': errors[0] }">
                                 {{ errors[0] }}
@@ -66,8 +66,8 @@
         data() {
             return {
                 inputData: {
-                    login_id: null,
-                    login_pw: null,
+                    email: null,
+                    password: null,
                 },
                 isShow: false,
             }
@@ -82,8 +82,9 @@
                 try {
                     await this.login(data).then((res) => {
                         this.isShow = false
-                        const name = res.typeAuth === 'admin' ? 'AdminDashboard' : 'AccountDashboard'
-                        this.$router.push({name: name})
+                        this.$message.success('ahihi');
+                        // const name = res.typeAuth === 'admin' ? 'AdminDashboard' : 'AccountDashboard'
+                        // this.$router.push({name: name})
                     })
                 } catch (e) {
                     this.isShow = false

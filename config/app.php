@@ -168,6 +168,7 @@ return [
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Flugg\Responder\ResponderServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
         /*
          * Application Service Providers...
          */

@@ -5,7 +5,7 @@ export const AuthGuard = (to, from, next) => {
     let currentUser = store.getters['auth/currentUser']
     if (Cookie.findByName('access_token')) {
         // Exist cookie
-        if (!(currentUser.admin_name || currentUser.account_name)) {
+        if (!(currentUser.email || currentUser.name)) {
             store.dispatch('auth/checkAuth').then(() => {
                 if (_.indexOf(to.meta.permission, Cookie.findByName('type')) !== -1) {
                     next()

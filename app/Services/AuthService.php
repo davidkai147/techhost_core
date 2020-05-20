@@ -51,11 +51,11 @@ class AuthService
     public function dataAuthenticated($token)
     {
         $guard = $this->getGuard();
-
+        $type = auth($guard)->user()->type;
         return [
             'code'         => 200,
             'message'      => 'OK!',
-            'typeAuth'     => $guard,
+            'typeAuth'     => $type,
             'data'         => auth($guard)->user(),
             'access_token' => $token,
             'token_type'   => 'Bearer',

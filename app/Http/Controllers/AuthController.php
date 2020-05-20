@@ -94,8 +94,8 @@ class AuthController extends Controller
     {
         $typeAuth = $this->authService->getGuard();
         $user = auth($typeAuth)->user();
-
-        $extend = ['typeAuth' => $typeAuth];
+        $type = $user->type;
+        $extend = ['typeAuth' => $type];
 
         return $this->responseService->json('OK!', 200, 200, $user, $extend);
     }

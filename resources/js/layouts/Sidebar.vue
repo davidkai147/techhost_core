@@ -8,7 +8,7 @@
           <img src="../assets/noavatarn.png" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info w-170">
-          <p class="long-and-truncated">{{currentUser.admin_name || currentUser.account_name}}</p>
+          <p class="long-and-truncated">{{currentUser.name}}</p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
@@ -114,9 +114,12 @@
         currentUser: 'currentUser',
       }),
 
-      isAdmin() {
-        return Cookie.findByName('type') === 'admin'
+      isSuperAdmin() {
+        return Cookie.findByName('type') === 'SUPER_ADMIN'
       },
+      isAdmin() {
+        return Cookie.findByName('type') === 'ADMIN'
+      }
     },
     mounted() {
       // Fixed: Sidebar menu broken (Submenu cannot expand to access sub-menus)

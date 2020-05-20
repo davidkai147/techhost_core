@@ -65,7 +65,7 @@ router.beforeEach((to, from, next) => {
     }
 
     if (to.name === 'SignIn' && Cookie.findByName('access_token')) {
-        const name = Cookie.findByName('type') === 'admin' ? 'AdminDashboard' : 'AccountDashboard'
+        const name = Cookie.findByName('type') === 'SUPER_ADMIN' ? 'AdminDashboard' : 'AccountDashboard'
         next({name: name})
     } else {
         next()

@@ -82,9 +82,8 @@
                 try {
                     await this.login(data).then((res) => {
                         this.isShow = false
-                        this.$message.success('ahihi');
-                        // const name = res.typeAuth === 'admin' ? 'AdminDashboard' : 'AccountDashboard'
-                        // this.$router.push({name: name})
+                        const name = res.typeAuth === 'SUPER_ADMIN' ? 'AdminDashboard' : 'AccountDashboard'
+                        this.$router.push({name: name})
                     })
                 } catch (e) {
                     this.isShow = false

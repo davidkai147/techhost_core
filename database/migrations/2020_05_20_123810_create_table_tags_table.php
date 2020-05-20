@@ -16,18 +16,18 @@ class CreateTableTagsTable extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 120)->nullable();
-            $table->integer('parent_id')->nullable();
+            $table->bigInteger('parent_id')->nullable();
             $table->text('description')->nullable();
             $table->string('status', 60)->nullable();
-            $table->integer('author_id')->nullable();
-            $table->string('author_type', 255)->nullable();
             $table->tinyInteger('ordering')->nullable();
-            $table->timestamps();
+            $table->bigInteger('created_by')->unsigned()->nullable();
+            $table->bigInteger('updated_by')->unsigned()->nullable();
             $table->softDeletes();
+            $table->timestamps();
+
 
             $table->index('name');
             $table->index('parent_id');
-            $table->index('author_id');
         });
     }
 

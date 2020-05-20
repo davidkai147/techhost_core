@@ -20,13 +20,13 @@ class CreateTableBlocksTable extends Migration
             $table->text('description')->nullable();
             $table->text('content')->nullable();
             $table->string('status', 60)->nullable();
-            $table->integer('user_id')->unsigned()->nullable();
+            $table->bigInteger('created_by')->unsigned()->nullable();
+            $table->bigInteger('updated_by')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
 
             $table->index('name');
             $table->index('code');
-            $table->index('user_id');
 
         });
     }

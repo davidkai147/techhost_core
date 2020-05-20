@@ -18,7 +18,7 @@
                                 placeholder="example@gmail.com"
                                 name="ログインID"
                                 v-model="inputData.login_id">
-                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                            <span class="fa fa-user form-control-feedback"></span>
                             <span v-show="errors[0]" :class="{'help-block': errors[0] }">
                                 {{ errors[0] }}
                             </span>
@@ -34,7 +34,7 @@
                                 placeholder="Please input password"
                                 name="ログインパスワード"
                                 v-model="inputData.login_pwd">
-                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                            <span class="fa fa-user form-control-feedback"></span>
                             <span v-show="errors[0]" :class="{'help-block': errors[0] }">
                                 {{ errors[0] }}
                             </span>

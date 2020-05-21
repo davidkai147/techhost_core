@@ -10,9 +10,9 @@
     </router-link>
     <router-link v-else tag="a" :to="{name: 'Shop'}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>A</b>SA</span>
+      <span class="logo-mini"><b>TH</b>C</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>AIDMA </b>LTE</span>
+      <span class="logo-lg"><b>TechHost </b>LTE</span>
     </router-link>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -27,7 +27,7 @@
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
               <img src="../assets/noavatarn.png" class="user-image" alt="User Image">
-              <span class="hidden-xs">{{currentUser.admin_name || currentUser.account_name}}</span>
+              <span class="hidden-xs">{{currentUser.name}}</span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
@@ -35,17 +35,17 @@
                 <img src="../assets/noavatarn.png" class="img-circle" alt="User Image">
 
                 <p>
-                  {{currentUser.admin_name || currentUser.account_name}}
+                  {{currentUser.email}}
                   <small>{{currentUser.created_at}}</small>
                 </p>
               </li>
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">プロフィール</a>
+                  <a href="#" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right" @click.prevent="logout">
-                  <a class="btn btn-default btn-flat">ログアウト</a>
+                  <a class="btn btn-default btn-flat">Logout</a>
                 </div>
               </li>
             </ul>

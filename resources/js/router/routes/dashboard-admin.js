@@ -8,10 +8,10 @@ export default [
         component: Dashboard,
         meta: {
             requiredAuth: true,
-            title: 'ダッシュボード',
+            title: 'Dashboard',
             permission: ['SUPER_ADMIN', 'ADMIN', 'USER'],
             breadcrumb: [
-                {name: 'ダッシュボード', nameRoute: 'AdminDashboard', active: 1},
+                {name: 'Dashboard', nameRoute: 'AdminDashboard', active: 1},
             ],
         },
     }

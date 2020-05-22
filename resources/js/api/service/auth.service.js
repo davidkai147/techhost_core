@@ -13,20 +13,20 @@ export const AuthService = {
         );
     },
 
-    // logout () {
-    //   let token = document.head.querySelector('meta[name="csrf-token"]')
-    //   const body = new FormData()
-    //   body.append('_token', token.content)
-    //   let config = {}
-    //   config.baseURL = '/'
-    //   config.headers = {}
-    //   if (Cookie.findByName('aidma_shelf_analytics_session')) {
-    //     config.headers['Authorization'] = `${ Cookie.findByName('aidma_shelf_analytics_session') }`
-    //   }
-    //   if (localStorage.getItem('current-route')) {
-    //     localStorage.removeItem('current-route')
-    //   }
-    //   return ApiService.post('cms/signout', body, config)
-    // },
+    logout () {
+      let token = document.head.querySelector('meta[name="csrf-token"]')
+      const body = new FormData()
+      body.append('_token', token.content)
+      let config = {}
+      config.baseURL = '/'
+      config.headers = {}
+      // if (Cookie.findByName('aidma_shelf_analytics_session')) {
+      //   config.headers['Authorization'] = `${ Cookie.findByName('aidma_shelf_analytics_session') }`
+      // }
+      if (localStorage.getItem('current-route')) {
+        localStorage.removeItem('current-route')
+      }
+      return ApiService.post('cms/signout', body, config)
+    },
 
 }

@@ -94,10 +94,14 @@ class AuthController extends Controller
     {
         $typeAuth = $this->authService->getGuard();
         $user = auth($typeAuth)->user();
-        $type = $user->type;
-        $extend = ['typeAuth' => $type];
+        if (!empty($user)) {
+            $type = $user->type;
+            $extend = ['typeAuth' => $type];
 
-        return $this->responseService->json('OK!', 200, 200, $user, $extend);
+            return $this->responseService->json('OK!', 200, 200, $user, $extend);
+        } else {
+            return $this->responseService->json('Token has expired', 200, 401);
+        }
     }
 
     /**

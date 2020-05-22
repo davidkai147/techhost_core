@@ -87,7 +87,7 @@
                     })
                 } catch (e) {
                     this.isShow = false
-                    this.$message.error('cc')
+                    this.$message.error(e.response.data.message)
                 }
             }
         },

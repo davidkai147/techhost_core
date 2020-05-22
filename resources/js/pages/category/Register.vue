@@ -13,7 +13,7 @@
     import CategoryBreadcrumb from '../../components/category/CategoryBreadcrumb'
 
     export default {
-        name: 'Regist',
+        name: 'Register',
         components: {CategoryBreadcrumb, CategoryForm},
 
         beforeRouteLeave(from, to, next) {

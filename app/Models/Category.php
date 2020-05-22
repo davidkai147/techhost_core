@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends BaseModel
@@ -24,5 +23,13 @@ class Category extends BaseModel
         'updated_by'
     ];
 
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
+    }
 
+    public function children()
+    {
+        return $this->hasMany(Category::class, 'parent_id');
+    }
 }

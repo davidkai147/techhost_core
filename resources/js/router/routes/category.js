@@ -1,6 +1,6 @@
 // import components
 import Category from '../../pages/category/Category'
-import Regist from '../../pages/category/Regist'
+import Register from '../../pages/category/Register'
 import Edit from '../../pages/category/Edit'
 
 export default [
@@ -10,24 +10,24 @@ export default [
         component: Category,
         meta: {
             requiredAuth: true,
-            title: '契約一覧',
+            title: 'Category list',
             permission: ['SUPER_ADMIN', 'ADMIN'],
             breadcrumb: [
-                {name: '契約一覧', nameRoute: 'Category', active: 1},
+                {name: 'Category list', nameRoute: 'Category', active: 1},
             ],
         },
     },
     {
-        path: 'category/regist',
-        name: 'CategoryRegist',
-        component: Regist,
+        path: 'category/register',
+        name: 'CategoryRegister',
+        component: Register,
         meta: {
             requiredAuth: true,
-            title: '契約登録',
+            title: 'Register category',
             permission: ['SUPER_ADMIN', 'ADMIN'],
             breadcrumb: [
-                {name: '契約一覧', nameRoute: 'Category', active: 0},
-                {name: '契約登録', nameRoute: 'CategoryRegist', active: 1},
+                {name: 'Category list', nameRoute: 'Category', active: 0},
+                {name: 'Register category', nameRoute: 'CategoryRegister', active: 1},
             ],
         },
     },
@@ -37,11 +37,11 @@ export default [
         component: Edit,
         meta: {
             requiredAuth: true,
-            title: '契約編集',
+            title: 'Edit category',
             permission: ['SUPER_ADMIN', 'ADMIN'],
             breadcrumb: [
-                {name: '契約一覧', nameRoute: 'Category', active: 0},
-                {name: '契約編集', nameRoute: 'CategoryEdit', active: 1},
+                {name: 'Category list', nameRoute: 'Category', active: 0},
+                {name: 'Register category', nameRoute: 'CategoryEdit', active: 1},
             ],
         },
     }

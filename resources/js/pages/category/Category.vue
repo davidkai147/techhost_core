@@ -10,8 +10,8 @@
                         <!-- Category Regist -->
                         <div class="box-header">
                             <h3 class="box-title">
-                                <router-link class="btn btn-success" :to="{name: 'CategoryRegist'}">
-                                    <i class="fa fa-plus mr-5"></i> 新規登録
+                                <router-link class="btn btn-success" :to="{name: 'CategoryRegister'}">
+                                    <i class="fa fa-plus mr-5"></i>&nbsp;&nbsp;Register
                                 </router-link>
                             </h3>
                         </div>

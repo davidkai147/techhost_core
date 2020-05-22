@@ -4,30 +4,63 @@
             <table id="contractTable" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                    <th>契約名</th>
-                    <th class="text-center">最終更新日時</th>
-                    <th class="text-center">操作</th>
+                    <th class="text-center"><input type="checkbox" name="selectedItems" /></th>
+                    <th class="text-center">Name</th>
+                    <th class="text-center">Description</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Is featured</th>
+                    <th class="text-center">Ordering</th>
+                    <th class="text-center">Is default</th>
+                    <th class="text-center">Latest at</th>
+                    <th class="text-center">Action</th>
                 </tr>
                 </thead>
                 <tbody v-if="list.length > 0">
-                <tr v-for="(item, index) in list" :key="index">
-                    <td><p>{{item.name}}</p></td>
-                    <td class="text-center">{{item.latest_at}}</td>
-                    <td class="text-center col-xs-2">
-                        <router-link class="btn btn-xs btn-primary" tag="li"
-                                     :to="{ name: 'CategoryEdit', params: { id: item.id }}">
-                            <i class="fa fa-edit mr-5"></i> 編集
-                        </router-link>
-                        <button @click="handleDelete(item.id)" class="btn btn-xs btn-danger">
-                            <i class="fa fa-trash-o mr-5"></i> 削除
-                        </button>
-                    </td>
-                </tr>
+                <template v-for="item in list">
+                    <tr>
+                        <td class="text-center"><input type="checkbox" name="selectedItems" /></td>
+                        <td><p>{{ item.name }}</p></td>
+                        <td><p>{{ item.description }}</p></td>
+                        <td><p class="btn btn-block btn-success">{{ item.status }}</p></td>
+                        <td><p>{{ item.is_featured }}</p></td>
+                        <td><p>{{ item.ordering }}</p></td>
+                        <td><p>{{ item.is_default }}</p></td>
+                        <td class="text-center">{{item.latest_at}}</td>
+                        <td class="text-center col-xs-2">
+                            <router-link class="btn btn-block btn-primary" tag="li"
+                                         :to="{ name: 'CategoryEdit', params: { id: item.id }}">
+                                <i class="fa fa-edit mr-5"></i> Edit
+                            </router-link>
+                            <button @click="handleDelete(item.id)" class="btn btn-block btn-danger">
+                                <i class="fa fa-trash-o mr-5"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr v-for="child in item.children">
+                        <td class="text-center"><input type="checkbox" name="selectedItems" /></td>
+                        <td><p>---- {{ child.name }}</p></td>
+                        <td><p>{{ child.description }}</p></td>
+                        <td><p class="btn btn-block btn-success">{{ item.status }}</p></td>
+                        <td><p>{{ child.is_featured }}</p></td>
+                        <td><p>{{ child.ordering }}</p></td>
+                        <td><p>{{ child.is_default }}</p></td>
+                        <td class="text-center">{{child.latest_at}}</td>
+                        <td class="text-center col-xs-2">
+                            <router-link class="btn btn-block btn-primary" tag="li"
+                                         :to="{ name: 'CategoryEdit', params: { id: child.id }}">
+                                <i class="fa fa-edit mr-5"></i> Edit
+                            </router-link>
+                            <button @click="handleDelete(child.id)" class="btn btn-block btn-danger">
+                                <i class="fa fa-trash-o mr-5"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                </template>
                 </tbody>
                 <tbody v-else align="center">
                 <tr>
-                    <td colspan="6" class="text-center col-xs-12">
-                        <div class="no-result"><h1>There is no data.</h1></div>
+                    <td colspan="9" class="text-center col-xs-12">
+                        <div class="no-result"><h2>There is no data.</h2></div>
                     </td>
                 </tr>
                 </tbody>

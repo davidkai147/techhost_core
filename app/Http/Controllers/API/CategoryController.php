@@ -24,7 +24,8 @@ class CategoryController extends ApiBaseController
      */
     public function index(Category $category, Request $request)
     {
-        $category = $category::paginate($this->perPage);
+        $category = Category::with('children')->whereNull('parent_id');
+        $category = $category->paginate($this->perPage);
         return $this->ok($category, CategoryTransformer::class);
     }
 

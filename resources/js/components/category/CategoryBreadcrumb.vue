@@ -1,11 +1,11 @@
 <template>
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h3 class="font-bold">
+        <h1 class="font-bold">
             <i class="fa fa-files-o"></i> {{ $route.meta.title || '契約管理' }}
-        </h3>
+        </h1>
         <ol class="breadcrumb">
-            <li><i class="fa fa-dashboard"></i> ホーム</li>
+            <li><a><i class="fa fa-dashboard"></i> Home</a></li>
 
             <router-link
                 tag="li"

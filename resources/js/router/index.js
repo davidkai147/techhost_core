@@ -4,6 +4,7 @@ import Index from '../pages/Index'
 /* Route module */
 import SignInRoute from './routes/signin'
 import ContractRoute from './routes/contract'
+import CategoryRoute from './routes/category'
 import AccountRoute from './routes/account'
 import ShopRoute from './routes/shop'
 import ShelfLocationRoute from './routes/shelf-location'
@@ -24,8 +25,16 @@ const router = new Router({
     routes: [
         SignInRoute,
         {
-            path: '/cms',
+            path: '',
             redirect: '/cms/signin',
+        },
+        {
+            path: '/cms',
+            component: Index,
+            children: [
+                ...CategoryRoute
+            ],
+            beforeEnter: multiguard([AuthGuard]),
         },
         {
             path: '/cms/admin',

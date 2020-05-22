@@ -15,7 +15,7 @@
             <!-- /.search form -->
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu" data-widget="tree">
-                <router-link tag="li" active-class="active disabled" :to="{name: 'AdminDashBoard'}" class="treeview">
+                <router-link tag="li" active-class="active disabled" :to="{name: 'AdminDashboard'}" class="treeview">
                     <a>
                         <i class="fa fa-dashboard"></i>
                         <span>Dashboard</span>
@@ -39,7 +39,7 @@
                         <span>Roles</span>
                     </a>
                 </router-link>
-                <router-link tag="li" active-class="active disabled" :to="{name: 'SignIn'}" class="treeview">
+                <router-link tag="li" active-class="active disabled" :to="{name: 'Category'}" class="treeview">
                     <a>
                         <i class="fa fa-dashboard"></i>
                         <span>Categories</span>

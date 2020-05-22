@@ -9,7 +9,7 @@ export default [
         meta: {
             requiredAuth: true,
             title: 'Dashboard',
-            permission: ['SUPER_ADMIN', 'ADMIN', 'USER'],
+            permission: ['SUPER_ADMIN', 'ADMIN'],
             breadcrumb: [
                 {name: 'Dashboard', nameRoute: 'AdminDashboard', active: 1},
             ],

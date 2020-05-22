@@ -16,9 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/unauthenticated', 'HomeController@unauthenticated')->name('unauthenticated');
 
-Route::group([
-    'prefix' => 'auth',
-], function () {
+Route::group(['prefix' => 'auth'], function () {
     Route::get('login', 'AuthController@before_login')->name('login');
     Route::post('login', 'AuthController@login');
 
@@ -26,5 +24,19 @@ Route::group([
         Route::get('refresh', 'AuthController@refresh');
         Route::get('user', 'AuthController@user');
         Route::get('logout', 'AuthController@logout');
+    });
+});
+
+// For main
+Route::group(['middleware' => 'jwt.auth'], function () {
+    Route::namespace('API')->group(function () {
+        Route::resource('categories', 'CategoryController');
+    });
+});
+
+// For super admin
+Route::group(['prefix' => 'sa', 'middleware' => ['jwt.auth', 'role.sa']], function () {
+    Route::namespace('API')->group(function () {
+
     });
 });

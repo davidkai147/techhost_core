@@ -33,19 +33,11 @@ class ApiBaseController extends Controller
     public function __construct(Request $request, $orderByDefault = null)
     {
         $this->perPage = $request->get('perPage') ? $request->get('perPage') : 9999;
-        $this->orderBy = $request->get('orderBy') ? $this->getOrderBy($request) : ! empty($orderByDefault) ? $orderByDefault : $this->latest_at();
+        $this->orderBy = $request->get('orderBy') ? $this->getOrderBy($request) : (! empty($orderByDefault) ? $orderByDefault : $this->latest_at());
         $this->direction = $request->get('direction') ? $request->get('direction') : 'desc';
 
         $authService = new AuthService();
         $this->user = optional(auth($authService->getGuard())->user());
-    }
-
-    /**
-     * @return \Illuminate\Database\Query\Expression
-     */
-    public function joinShelfItems()
-    {
-        return DB::raw("(SELECT * FROM shelf_items GROUP BY shelf_items.jan_code, shelf_items.shop_id) as shelf_items");
     }
 
     /**

@@ -13,8 +13,14 @@
     import ContractBreadcrumb from '../../components/contract/ContractBreadcrumb'
 
     export default {
-        name: 'Regist',
+        name: 'Edit',
         components: {ContractBreadcrumb, ContractForm},
+
+        beforeRouteEnter(to, from, next) {
+            return Promise.all([
+                store.dispatch('contract/getItem', to.params.id),
+            ]).then(() => next())
+        },
 
         beforeRouteLeave(from, to, next) {
             store.dispatch('contract/resetState').then(_ => next())

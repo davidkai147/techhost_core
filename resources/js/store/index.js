@@ -4,6 +4,7 @@ import Vue from 'vue'
 // import modules
 import auth from './modules/auth'
 import contract from './modules/contract'
+import category from './modules/category'
 import accounts from './modules/accounts'
 import shops from './modules/shops'
 import shelf from './modules/shelf-location'
@@ -18,6 +19,7 @@ Vue.use(Vuex)
 const modules = {
     auth,
     contract,
+    category,
     accounts,
     shops,
     shelf,

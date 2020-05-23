@@ -18,6 +18,7 @@ class CreateTableMetaBoxesTable extends Migration
             $table->bigInteger('pp_id');
             $table->string('meta_key')->nullable();
             $table->longText('meta_value')->nullable();
+            $table->string('cols_type')->nullable();
             $table->timestamps();
 
             $table->index('meta_key');

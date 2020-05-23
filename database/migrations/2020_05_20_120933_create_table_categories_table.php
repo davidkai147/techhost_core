@@ -20,6 +20,7 @@ class CreateTableCategoriesTable extends Migration
             $table->text('description')->nullable();
             $table->string('status', 60)->nullable();
             $table->string('icon', 60)->nullable();
+            $table->tinyInteger('level')->default(1);
             $table->tinyInteger('is_featured')->nullable();
             $table->tinyInteger('ordering')->nullable();
             $table->tinyInteger('is_default')->nullable();

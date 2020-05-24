@@ -36,7 +36,15 @@ return [
     */
 
     'guards' => [
-        'web' => [
+        config('techhost.guard.user') => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+        ],
+        'super-admin' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+        ],
+        config('techhost.guard.ad') => [
             'driver' => 'jwt',
             'provider' => 'users',
         ],

@@ -17,31 +17,32 @@ class AuthService
 
     public function getGuard()
     {
-//        if (auth('admin')->check()) {
-//            return 'admin';
-//        } else {
-//            return 'account';
-//        }
-        return 'web';
+        if (auth(config('techhost.guard.sa'))->check()) {
+            return config('techhost.guard.sa');
+        } else if (auth(config('techhost.guard.ad'))->check()) {
+            return config('techhost.guard.ad');
+        }
+        return config('techhost.guard.user');
     }
 
     public function getAuth($email, $getGuard = null)
     {
-        $guard = '';
+        $guard = 'web';
 
         // check with Admin table
         $auth = User::query()->where('email', $email)->first();
-//        if (empty($auth)) {
-//            $auth = Account::query()->where('login_id', $login_id)->first();
-//            if (! empty($auth)) {
-//                $guard = 'account';
-//            }
-//        } else {
-//            $guard = 'admin';
-//        }
-        $guard = 'web';
+        if (!empty($auth)) {
+            switch ($auth->type) {
+                case config('techhost.user_type.sa') :
+                    $guard = config('techhost.guard.sa');
+                    break;
+                case config('techhost.user_type.ad') :
+                    $guard = config('techhost.guard.ad');
+                    break;
+            }
+        }
 
-        return ! empty($getGuard) ? [$auth, $guard] : $auth;
+        return !empty($getGuard) ? [$auth, $guard] : $auth;
     }
 
     /**
@@ -53,12 +54,12 @@ class AuthService
         $guard = $this->getGuard();
         $type = auth($guard)->user()->type;
         return [
-            'code'         => 200,
-            'message'      => 'OK!',
-            'typeAuth'     => $type,
-            'data'         => auth($guard)->user(),
+            'code' => 200,
+            'message' => 'OK!',
+            'typeAuth' => $type,
+            'data' => auth($guard)->user(),
             'access_token' => $token,
-            'token_type'   => 'Bearer',
+            'token_type' => 'Bearer',
         ];
     }
 }

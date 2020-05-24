@@ -32,4 +32,9 @@ class Category extends BaseModel
     {
         return $this->hasMany(Category::class, 'parent_id');
     }
+
+    public function allChildren()
+    {
+        return $this->children()->with('allChildren');
+    }
 }

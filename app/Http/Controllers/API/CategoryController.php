@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Category;
+use App\Traits\CRUDTrait;
 use App\Transformers\CategoryTransformer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CategoryController extends ApiBaseController
 {
+    use CRUDTrait;
 
     public function __construct(Request $request)
     {
@@ -24,8 +26,9 @@ class CategoryController extends ApiBaseController
      */
     public function index(Category $category, Request $request)
     {
-        $category = Category::with(['parent', 'allChildren'])->whereNull('parent_id');
-        dd($category->get());
+        $category = Category::where('id', 10000);//$this->read($category);
+        //$category = Category::with(['parent', 'allChildren'])->whereNull('parent_id');
+        // dd($category->get());
         $category = $category->paginate($this->perPage);
         return $this->ok($category, CategoryTransformer::class);
     }

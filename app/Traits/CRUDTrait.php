@@ -1,6 +1,7 @@
 <?php
-namespace App\Helpers;
+namespace App\Traits;
 
+use App\Services\AuthService;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -8,6 +9,12 @@ use Illuminate\Support\Facades\Validator;
 
 trait CRUDTrait
 {
+    protected $authService;
+    public function __construct()
+    {
+        $this->authService = new AuthService();
+    }
+
     /**
      * Hàm read dữ liệu
      * @param Request $request
@@ -17,11 +24,12 @@ trait CRUDTrait
     private function read(Model $model, $hide_column = [])
     {
         $request = request();
+        dd($request);
         $filters = $request->filters ?? [];
         $withs = $request->withs ?? [];
         $ids = $request->ids ?? [];
         $selects = $request->selects ?? [];
-        $pageshow = $request->get('per_page', 0);
+        $pageshow = $request->get('perPage', 0);
         $order_by = $request->order_by ?? ['key' => 'id', 'value' => 'desc'];
         $with_trash = $request->get('with_trash', false);
 
@@ -724,8 +732,7 @@ trait CRUDTrait
      */
     public function getCurrentUser()
     {
-        $user = auth('api')->user() ?? auth('system')->user();
-        return $user;
+        return $this->authService->getCurrentUser();
     }
 
     /**

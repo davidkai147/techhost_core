@@ -45,6 +45,12 @@ class AuthService
         return !empty($getGuard) ? [$auth, $guard] : $auth;
     }
 
+    public function getCurrentUser()
+    {
+        $guard = $this->getGuard();
+        return auth($guard)->user();
+    }
+
     /**
      * @param $token
      * @return mixed

@@ -9,7 +9,11 @@ const initialState = {
     paginator: {},
     queryParams: {
         page: 1,
-        perPage: 10,
+        perPage: 15,
+        withs: [
+            'parents',
+            'allChildren'
+        ]
     },
 }
 
@@ -42,16 +46,20 @@ const mutations = {
         state.paginator = {...paginator}
     },
 
+    setQueryParams(state, queryParams) {
+        state.queryParams = {...queryParams}
+    }
+
 }
 
 const actions = {
     async getLists({commit}, params) {
-
+        console.log('day la getLists')
         if (_.keys(params).length === 0) {
             params = {...state.queryParams}
         }
 
-        if (params.per_page === 0) {
+        if (params.perPage === 0) {
             params = {}
         }
 
@@ -96,7 +104,7 @@ const actions = {
 
     deleteItem({commit}, categoryId) {
         return categoryService.deleteCategory(`${categoryId}`)
-    },
+    }
 
 }
 

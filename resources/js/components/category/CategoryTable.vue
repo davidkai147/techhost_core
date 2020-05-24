@@ -107,6 +107,7 @@
             }
 
             this.handleReplaceUrl(queries)
+            console.log(this.$store.state.category.queryParams)
         },
 
         computed: {

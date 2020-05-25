@@ -24,7 +24,7 @@ trait CRUDTrait
     private function read(Model $model, $hide_column = [])
     {
         $request = request();
-        dd($request);
+        //dd($request);
         $filters = $request->filters ?? [];
         $withs = $request->withs ?? [];
         $ids = $request->ids ?? [];
@@ -40,14 +40,16 @@ trait CRUDTrait
         if (count($selects) > 0) {
             $model = $model->select($selects);
         }
-
+        dd($withs);
         if (count($withs) > 0) {
             foreach ($withs as $with) {
-                if (!isset($with['conditions'])) {
-                    $model = $model->with("{$with['relation_name']}");
+                $arrayWith = json_decode($with, true);
+                // dd($arrayWith);
+                if (!isset($arrayWith['conditions'])) {
+                    $model = $model->with("{$arrayWith['relation_name']}");
                 } else {
-                    $model = $model->with(["{$with['relation_name']}" => function ($query) use ($with) {
-                        $query = $this->filter_withs($query, $with['conditions']);
+                    $model = $model->with(["{$arrayWith['relation_name']}" => function ($query) use ($arrayWith) {
+                        $query = $this->filter_withs($query, $arrayWith['conditions']);
                     }]);
                 }
             }
@@ -67,9 +69,9 @@ trait CRUDTrait
             $model = $model->orderBy($order_by['key'], $order_by['value']);
         }
 
-        try {
             if (isset($pageshow) && is_numeric($pageshow) && $pageshow > 0) {
-                $model = $model->paginateTrans((int)$pageshow);
+                //$model = $model->paginateTrans((int)$pageshow);
+                $model = $model->paginate((int)$pageshow);
             } else {
                 if (count($ids) === 1) {
                     $model = $model->first();
@@ -78,24 +80,7 @@ trait CRUDTrait
                 }
                 $model = $model->toTrans();
             }
-            return [
-                'data' => $model,
-                'message' => trans('global.success'),
-                'code' => SUCCESS,
-            ];
-        } catch (\Exception $exception) {
-            return [
-                'data' => [],
-                'message' => $exception->getMessage(),
-                'code' => OTHER_ERROR,
-            ];
-        } catch (\Throwable $exception) {
-            return [
-                'data' => [],
-                'message' => $exception->getMessage(),
-                'code' => OTHER_ERROR,
-            ];
-        }
+        return $model;
     }
 
     /**

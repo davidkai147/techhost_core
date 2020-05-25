@@ -36,7 +36,7 @@ return [
     */
 
     'guards' => [
-        config('techhost.guard.user') => [
+        'user' => [
             'driver' => 'jwt',
             'provider' => 'users',
         ],
@@ -44,7 +44,7 @@ return [
             'driver' => 'jwt',
             'provider' => 'users',
         ],
-        config('techhost.guard.ad') => [
+        'admin' => [
             'driver' => 'jwt',
             'provider' => 'users',
         ],

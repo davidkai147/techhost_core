@@ -9,11 +9,17 @@ const initialState = {
     paginator: {},
     queryParams: {
         page: 1,
-        perPage: 15,
-        withs: [
-            'parents',
-            'allChildren'
-        ]
+        perPage: 10,
+        withs: [{
+            relation_name: 'parent.allChildren',
+            conditions: [
+                {
+                    type: 'wherenull',
+                    column: 'parent_id'
+                }
+            ]
+        }]
+
     },
 }
 

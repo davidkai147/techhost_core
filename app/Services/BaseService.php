@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Services;
-use \App\Services\ResponseService;
 
 class BaseService {
 

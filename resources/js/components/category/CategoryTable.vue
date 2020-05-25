@@ -40,17 +40,17 @@
                         <td class="text-center"><input type="checkbox" name="selectedItems" /></td>
                         <td><p>---- {{ child.name }}</p></td>
                         <td><p>{{ child.description }}</p></td>
-                        <td><p class="btn btn-block btn-success">{{ item.status }}</p></td>
+                        <td><p class="btn btn-xs btn-success">{{ item.status }}</p></td>
                         <td><p>{{ child.is_featured }}</p></td>
                         <td><p>{{ child.ordering }}</p></td>
                         <td><p>{{ child.is_default }}</p></td>
                         <td class="text-center">{{child.latest_at}}</td>
                         <td class="text-center col-xs-2">
-                            <router-link class="btn btn-block btn-primary" tag="li"
+                            <router-link class="btn btn-xs btn-primary" tag="li"
                                          :to="{ name: 'CategoryEdit', params: { id: child.id }}">
                                 <i class="fa fa-edit mr-5"></i> Edit
                             </router-link>
-                            <button @click="handleDelete(child.id)" class="btn btn-block btn-danger">
+                            <button @click="handleDelete(child.id)" class="btn btn-xs btn-danger">
                                 <i class="fa fa-trash-o mr-5"></i> Delete
                             </button>
                         </td>

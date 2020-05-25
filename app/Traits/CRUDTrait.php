@@ -40,7 +40,7 @@ trait CRUDTrait
         if (count($selects) > 0) {
             $model = $model->select($selects);
         }
-        dd($withs);
+
         if (count($withs) > 0) {
             foreach ($withs as $with) {
                 $arrayWith = json_decode($with, true);

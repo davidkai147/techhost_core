@@ -44,9 +44,11 @@
         },
 
         beforeRouteEnter(to, from, next) {
+            console.log(to.query)
             return Promise.all([
                 store.dispatch('category/resetState'),
-                store.dispatch('category/getLists', to.query),
+                // Ko goi truoc khi vao route neu dieu kien qua phuc tap
+                //store.dispatch('category/getLists', to.query),
             ]).then(() => next())
         },
     }

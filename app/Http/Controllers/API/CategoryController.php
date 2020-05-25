@@ -28,15 +28,15 @@ class CategoryController extends ApiBaseController
     public function index(Category $category, Request $request)
     {
         //$category = Category::where('id', 10000);
-        $category = $this->categoryService->index($category);
+        //$category = $this->categoryService->index($category);
         //$category = Category::with(['parent', 'allChildren'])->whereNull('parent_id');
         // dd($category->get());
 
-//        $category = $category->with(["parent.allChildren" => function($query) {
-//            $query->whereNull('parent_id');
-//        }]);
+        $category = $category->with(["parent.allChildren" => function($query) {
+            $query->whereNull('parent_id');
+        }]);
 
-        //dd($category);
+        dd($category->get());
         //$category = $category->paginate($this->perPage);
         return $this->ok($category, CategoryTransformer::class);
     }

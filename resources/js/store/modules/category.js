@@ -9,17 +9,7 @@ const initialState = {
     paginator: {},
     queryParams: {
         page: 1,
-        perPage: 10,
-        withs: [{
-            relation_name: 'parent.allChildren',
-            conditions: [
-                {
-                    type: 'wherenull',
-                    column: 'parent_id'
-                }
-            ]
-        }]
-
+        perPage: 10
     },
 }
 
@@ -60,7 +50,6 @@ const mutations = {
 
 const actions = {
     async getLists({commit}, params) {
-        console.log('day la getLists')
         if (_.keys(params).length === 0) {
             params = {...state.queryParams}
         }

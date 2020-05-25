@@ -70,7 +70,7 @@
             <vPagination
                 v-model="page"
                 class="pull-right"
-                :page-count="paginator.totalPages"
+                :page-count="paginator.totalPages || 1"
                 :page-range="5"
                 :margin-pages="2"
                 :click-handler="handlePage"
@@ -107,7 +107,17 @@
             }
 
             this.handleReplaceUrl(queries)
-            console.log(this.$store.state.category.queryParams)
+            this.getLists({
+                page: 2,
+                perPage: 10,
+                withs: [{
+                    relation_name: 'parent.allChildren',
+                    conditions: [{
+                        type: 'wherenull',
+                        column: 'parent_id'
+                    }]
+                }]
+            })
         },
 
         computed: {

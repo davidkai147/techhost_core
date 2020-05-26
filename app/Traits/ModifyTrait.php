@@ -15,13 +15,13 @@ trait ModifyTrait
      */
     private static function currentUser()
     {
-        if (request()->bearerToken()) {
-            $user = auth('admin')->user() ? auth('admin')->user() : auth('account')->user();
-
-            return $user->getTable().'.'.$user->id ?? 0;
-        } else {
-            return 'server.0';
-        }
+//        if (request()->bearerToken()) {
+//            $user = auth('admin')->user() ? auth('admin')->user() : auth('account')->user();
+//
+//            return $user->getTable().'.'.$user->id ?? 0;
+//        } else {
+//            return 'server.0';
+//        }
     }
 
     /**
@@ -34,7 +34,7 @@ trait ModifyTrait
              * @var $model \Illuminate\Database\Eloquent\Model
              */
             $id = $model->getAttribute('id');
-            
+
             if (isset($id)) {
                 if (Schema::hasColumn($model->getTable(), static::$UPDATED_BY)) {
                     $model->{static::$UPDATED_BY} = self::currentUser();

@@ -16,9 +16,10 @@ class CategoryService extends BaseService
 
     }
 
-    public function index(Category $category)
+    public function get(Category $category)
     {
-        return $this->read($category);
+        $category = $category->with("allChildren")->whereNull('parent_id');
+        return $category;
     }
 
 

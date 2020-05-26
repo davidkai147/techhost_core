@@ -16,8 +16,7 @@
                 </tr>
                 </thead>
                 <tbody v-if="list.length > 0">
-                <template v-for="item in list">
-                    <tr>
+                    <tr v-for="item in list" :key="item.id">
                         <td class="text-center"><input type="checkbox" name="selectedItems" /></td>
                         <td><p>{{ item.name }}</p></td>
                         <td><p>{{ item.description }}</p></td>
@@ -36,26 +35,6 @@
                             </button>
                         </td>
                     </tr>
-                    <tr v-for="child in item.children">
-                        <td class="text-center"><input type="checkbox" name="selectedItems" /></td>
-                        <td><p>---- {{ child.name }}</p></td>
-                        <td><p>{{ child.description }}</p></td>
-                        <td><p class="btn btn-xs btn-success">{{ item.status }}</p></td>
-                        <td><p>{{ child.is_featured }}</p></td>
-                        <td><p>{{ child.ordering }}</p></td>
-                        <td><p>{{ child.is_default }}</p></td>
-                        <td class="text-center">{{child.latest_at}}</td>
-                        <td class="text-center col-xs-2">
-                            <router-link class="btn btn-xs btn-primary" tag="li"
-                                         :to="{ name: 'CategoryEdit', params: { id: child.id }}">
-                                <i class="fa fa-edit mr-5"></i> Edit
-                            </router-link>
-                            <button @click="handleDelete(child.id)" class="btn btn-xs btn-danger">
-                                <i class="fa fa-trash-o mr-5"></i> Delete
-                            </button>
-                        </td>
-                    </tr>
-                </template>
                 </tbody>
                 <tbody v-else align="center">
                 <tr>
@@ -74,8 +53,6 @@
                 :page-range="5"
                 :margin-pages="2"
                 :click-handler="handlePage"
-                :prev-text="'前へ'"
-                :next-text="'次へ'"
                 :container-class="'pagination'"
                 :page-class="'page-item'">
             </vPagination>
@@ -107,17 +84,15 @@
             }
 
             this.handleReplaceUrl(queries)
-            this.getLists({
-                page: 2,
-                perPage: 10,
-                withs: [{
-                    relation_name: 'parent.allChildren',
-                    conditions: [{
-                        type: 'wherenull',
-                        column: 'parent_id'
-                    }]
-                }]
-            })
+            // this.getLists({
+            //     withs: [{
+            //         relation_name: 'allChildren',
+            //     }],
+            //     conditions: [{
+            //         type: 'wherenull',
+            //         column: 'parent_id'
+            //     }]
+            // })
         },
 
         computed: {

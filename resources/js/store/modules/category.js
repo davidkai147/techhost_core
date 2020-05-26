@@ -78,9 +78,8 @@ const actions = {
         })
     },
 
-    async getItem({commit}, id) {
-        const params = {}
-        await categoryService.getCategory(`${id}`).then(res => {
+    async getItem({commit}, payload = {}) {
+        await categoryService.getCategory(`${ payload.id }`, payload.queries).then(res => {
             commit('setItem', res.data.data)
         })
     },

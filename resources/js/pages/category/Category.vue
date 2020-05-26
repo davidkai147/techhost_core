@@ -48,7 +48,7 @@
             return Promise.all([
                 store.dispatch('category/resetState'),
                 // Ko goi truoc khi vao route neu dieu kien qua phuc tap
-                //store.dispatch('category/getLists', to.query),
+                store.dispatch('category/getLists', to.query),
             ]).then(() => next())
         },
     }

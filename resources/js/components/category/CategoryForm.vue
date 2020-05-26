@@ -4,7 +4,7 @@
             <div class="col-sm-9 col-xs-12">
                 <div class="box box-primary">
                     <div class="box-body">
-                        <div class="form-group" :class="{'has-error': errors.has('契約名') }">
+                        <div class="form-group" :class="{'has-error': errors.first[0] }">
                             <label class="control-label">契約名<span class="required">*</span></label>
                             <input id="name"
                                    name="契約名"
@@ -13,8 +13,8 @@
                                    placeholder="契約名を入力してください"
                                    v-validate="'required|max:100'"
                                    v-model="inputData.contract_name">
-                            <span v-show="errors.has('契約名')" :class="{'help-block': errors.has('契約名') }">
-                                {{ errors.first('契約名') }}
+                            <span v-show="errors.first[0]" :class="{'help-block': errors.first[0] }">
+                                {{ errors.first[0] }}
                             </span>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
     import {mapGetters, mapActions} from 'vuex'
 
     export default {
-        name: 'ContractForm',
+        name: 'CategoryForm',
 
         data() {
             return {
@@ -62,18 +62,18 @@
         },
 
         computed: {
-            ...mapGetters('contract', {
+            ...mapGetters('category', {
                 item: 'item',
             }),
         },
 
         methods: {
-            ...mapActions('contract', ['getItem', 'putItem', 'createItem']),
+            ...mapActions('category', ['getItem', 'putItem', 'createItem']),
 
             handleSubmit() {
                 this.canSubmit = false
                 let data = {...this.inputData}
-                if (this.$route.name === 'ContractEdit') {
+                if (this.$route.name === 'CategoryEdit') {
                     this.putItem(data).then((res) => {
                         this.$message.success('更新されました。')
                         this.$router.push({name: 'Contract'})
@@ -84,7 +84,7 @@
                 } else {
                     this.createItem(data).then((res) => {
                         this.$message.success('登録しました。')
-                        this.$router.push({name: 'Contract'})
+                        this.$router.push({name: 'Category'})
                     }).catch(e => {
                         this.canSubmit = true
                         this.$message.error(e.response.data.errors[0])

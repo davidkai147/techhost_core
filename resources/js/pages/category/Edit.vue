@@ -1,29 +1,34 @@
 <template>
     <div>
-        <ContractBreadcrumb/>
+        <CategoryBreadcrumb/>
         <section class="content">
-            <ContractForm/>
+            <CategoryForm/>
         </section>
     </div>
 </template>
 
 <script>
-    import ContractForm from '../../components/contract/ContractForm'
+    import CategoryForm from '../../components/category/CategoryForm'
     import store from '../../store'
-    import ContractBreadcrumb from '../../components/contract/ContractBreadcrumb'
+    import CategoryBreadcrumb from '../../components/category/CategoryBreadcrumb'
+    import {mapGetters} from "vuex";
 
     export default {
         name: 'Edit',
-        components: {ContractBreadcrumb, ContractForm},
+        components: {CategoryBreadcrumb, CategoryForm},
+
+        computed: {
+            ...mapGetters('category', ['item'])
+        },
 
         beforeRouteEnter(to, from, next) {
             return Promise.all([
-                store.dispatch('contract/getItem', to.params.id),
+                store.dispatch('category/getItem', { id: to.params.id }),
             ]).then(() => next())
         },
 
         beforeRouteLeave(from, to, next) {
-            store.dispatch('contract/resetState').then(_ => next())
+            store.dispatch('category/resetState').then(_ => next())
         },
     }
 </script>

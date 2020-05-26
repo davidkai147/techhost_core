@@ -29,6 +29,7 @@ trait CRUDTrait
         $withs = $request->withs ?? [];
         $ids = $request->ids ?? [];
         $selects = $request->selects ?? [];
+        $conditions = $request->conditions ?? [];
         $pageshow = $request->get('perPage', 0);
         $order_by = $request->order_by ?? ['key' => 'id', 'value' => 'desc'];
         $with_trash = $request->get('with_trash', false);
@@ -55,6 +56,13 @@ trait CRUDTrait
             }
         }
 
+        if (count($conditions) > 0) {
+            foreach ($conditions as $condition) {
+                $arrayConditions = json_decode($condition, true);
+                $model = $this->filters($arrayConditions, $model, []);
+            }
+        }
+
         if (count($ids) > 1) {
             $model = $model->whereIn('id', $ids);
         } else if (count($ids) == 1) {
@@ -78,7 +86,7 @@ trait CRUDTrait
                 } else {
                     $model = $model->get();
                 }
-                $model = $model->toTrans();
+                // $model = $model->toTrans();
             }
         return $model;
     }

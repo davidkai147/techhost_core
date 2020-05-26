@@ -27,17 +27,10 @@ class CategoryController extends ApiBaseController
      */
     public function index(Category $category, Request $request)
     {
-        //$category = Category::where('id', 10000);
-        //$category = $this->categoryService->index($category);
-        //$category = Category::with(['parent', 'allChildren'])->whereNull('parent_id');
-        // dd($category->get());
-
-        $category = $category->with(["parent.allChildren" => function($query) {
-            $query->whereNull('parent_id');
-        }]);
-
-        dd($category->get());
-        //$category = $category->paginate($this->perPage);
+        // Day la code tay
+        //$category = $category->with("allChildren")->whereNull('parent_id');
+        $category = $this->categoryService->get($category);
+        $category = $category->paginate($this->perPage);
         return $this->ok($category, CategoryTransformer::class);
     }
 
@@ -65,12 +58,14 @@ class CategoryController extends ApiBaseController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Category $category
+     * @param int $id
+     * @return JsonResponse
      */
-    public function show($id)
+    public function show(Category $category)
     {
-        //
+        //$category = $this->categoryService->get($category);
+        return $this->ok($category, CategoryTransformer::class);
     }
 
     /**

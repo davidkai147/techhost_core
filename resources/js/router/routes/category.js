@@ -41,7 +41,7 @@ export default [
             permission: ['SUPER_ADMIN', 'ADMIN'],
             breadcrumb: [
                 {name: 'Category list', nameRoute: 'Category', active: 0},
-                {name: 'Register category', nameRoute: 'CategoryEdit', active: 1},
+                {name: 'Edit category', nameRoute: 'CategoryEdit', active: 1},
             ],
         },
     }

@@ -14,43 +14,70 @@
                             <label for="device_name" class="col-xs-12 col-sm-3 control-label">Name <span
                                 class="required">*</span></label>
                             <div class="col-xs-12 col-sm-8">
-                                <input v-validate="'required|max:128'" type="text" class="form-control" id="device_code" name="シリアル番号"
-                                       v-model="inputData.device_code" placeholder="Input name"
+                                <input type="text" class="form-control" id="name" name="name"
+                                       v-model="inputData.name" placeholder="Input name"
                                        :disabled="$route.meta.method === 'update'">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="shop" class="col-xs-12 col-sm-3 control-label">Parent category</label>
+                            <label for="parent_id" class="col-xs-12 col-sm-3 control-label">Parent category</label>
                             <div class="shop-section col-xs-12 col-sm-8">
                                 <el-select
-                                    name="店舗名"
-                                    id="shop"
-                                    v-model="inputData.shop_id"
+                                    name="parent_id"
+                                    id="parent_id"
+                                    v-model="inputData.parent_id"
                                     remote
                                     placeholder="Please select category">
-                                    <el-option :label="'店舗が存在しません'"
+                                    <el-option :label="'No parent category'"
+                                               :value="''">
+                                    </el-option>
+                                    <el-option v-for="item in categoryList"
+                                               :key="item.id"
+                                               :label="item.name"
+                                               :value="item.id">
+                                    </el-option>
+                                </el-select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="icon" class="col-xs-12 col-sm-3 control-label">Icon</label>
+                            <div class="shop-section col-xs-12 col-sm-8">
+                                <el-select
+                                    name="icon"
+                                    id="icon"
+                                    v-model="inputData.icon"
+                                    remote
+                                    placeholder="Please select icon">
+                                    <el-option :label="'No icon'"
                                                :value="''">
                                     </el-option>
                                 </el-select>
                             </div>
                         </div>
-
-
                         <div class="form-group">
-                            <label for="is_key" class="col-xs-12 col-sm-3 control-label">Status </label>
+                            <label for="status" class="col-xs-12 col-sm-3 control-label">Status </label>
                             <div class="col-xs-12 col-sm-8">
                                 <div class="checkbox">
                                     <el-switch
-                                        id="is_key"
-                                        name="登録キー発行"
-                                        v-model="inputData.is_key"
-                                        active-color="#13ce66"
-                                        inactive-color="#ff4949">
+                                        id="status"
+                                        name="status"
+                                        v-model="inputData.is_key">
                                     </el-switch>
                                 </div>
                             </div>
                         </div>
-
+                        <div class="form-group">
+                            <label for="is_feature" class="col-xs-12 col-sm-3 control-label">Is feature </label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="checkbox">
+                                    <el-switch
+                                        id="is_feature"
+                                        name="Is feature"
+                                        v-model="inputData.is_feature">
+                                    </el-switch>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Comment -->
                         <div class="form-group" >
                             <label for="comment" class="col-xs-12 col-sm-3 control-label">Description</label>
@@ -78,12 +105,12 @@
                 </div>
 
                 <div class="box-body">
-                    <button @click="submit" type="button" class="btn btn-block btn-success" :disabled="!canSubmit">
+                    <button type="button" class="btn btn-block btn-success" :disabled="!canSubmit">
                         <i class="fa fa-save"></i>
-                        {{ formAction === 'edit' ? 'Update' : 'Register' }}
+                        {{ this.$route.name === 'CategoryEdit' ? 'Update' : 'Register' }}
                     </button>
 
-                    <button @click="handleCancel" type="button" class="btn btn-block btn-default">
+                    <button type="button" class="btn btn-block btn-default">
                         <i class="fa fa-caret-left"></i>
                         Back
                     </button>
@@ -103,7 +130,12 @@
             return {
                 canSubmit: true,
                 inputData: {
-                    contract_name: null,
+                    name: null,
+                    description: null,
+                    icon: null,
+                    status: true,
+                    is_feature: false,
+                    parent_id: null
                 },
             }
         },
@@ -112,16 +144,19 @@
             if (!_.isEmpty(this.item)) {
                 this.inputData = {...this.item}
             }
+
+            this.getLists()
         },
 
         computed: {
             ...mapGetters('category', {
                 item: 'item',
+                categoryList: 'list'
             }),
         },
 
         methods: {
-            ...mapActions('category', ['getItem', 'putItem', 'createItem']),
+            ...mapActions('category', ['getItem', 'getLists', 'putItem', 'createItem']),
 
             handleSubmit() {
                 this.canSubmit = false
@@ -129,7 +164,7 @@
                 if (this.$route.name === 'CategoryEdit') {
                     this.putItem(data).then((res) => {
                         this.$message.success('更新されました。')
-                        this.$router.push({name: 'Contract'})
+                        this.$router.push({name: 'Category'})
                     }).catch(e => {
                         this.canSubmit = true
                         this.$message.error(e.response.data.errors[0])

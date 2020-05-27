@@ -20,19 +20,16 @@
                         <td class="text-center"><input type="checkbox" name="selectedItems" /></td>
                         <td><p>{{ item.name }}</p></td>
                         <td><p>{{ item.description }}</p></td>
-                        <td><p class="btn btn-block btn-success">{{ item.status }}</p></td>
+                        <td><el-button type="success" plain>{{ item.status }}</el-button></td>
                         <td><p>{{ item.is_featured }}</p></td>
                         <td><p>{{ item.ordering }}</p></td>
                         <td><p>{{ item.is_default }}</p></td>
                         <td class="text-center">{{item.latest_at}}</td>
                         <td class="text-center col-xs-2">
-                            <router-link class="btn btn-block btn-primary" tag="li"
-                                         :to="{ name: 'CategoryEdit', params: { id: item.id }}">
-                                <i class="fa fa-edit mr-5"></i> Edit
+                            <router-link :to="{ name: 'CategoryEdit', params: { id: item.id }}">
+                                <el-button type="primary" icon="el-icon-edit"></el-button>
                             </router-link>
-                            <button @click="handleDelete(item.id)" class="btn btn-block btn-danger">
-                                <i class="fa fa-trash-o mr-5"></i> Delete
-                            </button>
+                            <el-button @click="handleDelete(item.id)" type="danger" icon="el-icon-delete"></el-button>
                         </td>
                     </tr>
                 </tbody>

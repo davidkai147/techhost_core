@@ -16,6 +16,7 @@ class Category extends BaseModel
         'description',
         'status',
         'icon',
+        'level',
         'is_featured',
         'ordering',
         'is_default',

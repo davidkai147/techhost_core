@@ -1,43 +1,96 @@
 <template>
-    <form @submit.prevent="validateBeforeSubmit">
-        <div class="row">
-            <div class="col-sm-9 col-xs-12">
-                <div class="box box-primary">
-                    <div class="box-body">
-                        <div class="form-group" :class="{'has-error': errors.first[0] }">
-                            <label class="control-label">契約名<span class="required">*</span></label>
-                            <input id="name"
-                                   name="契約名"
-                                   type="text"
-                                   class="form-control"
-                                   placeholder="契約名を入力してください"
-                                   v-validate="'required|max:100'"
-                                   v-model="inputData.contract_name">
-                            <span v-show="errors.first[0]" :class="{'help-block': errors.first[0] }">
-                                {{ errors.first[0] }}
-                            </span>
+    <div class="row">
+        <div class="col-xs-12 col-sm-9">
+
+            <!-- Information -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Form</h3>
+                </div>
+
+                <div class="box-body">
+                    <form class="form-horizontal">
+                        <div class="form-group" >
+                            <label for="device_name" class="col-xs-12 col-sm-3 control-label">Name <span
+                                class="required">*</span></label>
+                            <div class="col-xs-12 col-sm-8">
+                                <input v-validate="'required|max:128'" type="text" class="form-control" id="device_code" name="シリアル番号"
+                                       v-model="inputData.device_code" placeholder="Input name"
+                                       :disabled="$route.meta.method === 'update'">
+                            </div>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label for="shop" class="col-xs-12 col-sm-3 control-label">Parent category</label>
+                            <div class="shop-section col-xs-12 col-sm-8">
+                                <el-select
+                                    name="店舗名"
+                                    id="shop"
+                                    v-model="inputData.shop_id"
+                                    remote
+                                    placeholder="Please select category">
+                                    <el-option :label="'店舗が存在しません'"
+                                               :value="''">
+                                    </el-option>
+                                </el-select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="is_key" class="col-xs-12 col-sm-3 control-label">Status </label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="checkbox">
+                                    <el-switch
+                                        id="is_key"
+                                        name="登録キー発行"
+                                        v-model="inputData.is_key"
+                                        active-color="#13ce66"
+                                        inactive-color="#ff4949">
+                                    </el-switch>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comment -->
+                        <div class="form-group" >
+                            <label for="comment" class="col-xs-12 col-sm-3 control-label">Description</label>
+                            <div class="col-xs-12 col-sm-8">
+                <textarea id="comment"
+                          name="コメント"
+                          type="text"
+                          class="form-control"
+                          placeholder="Please input description"
+                          v-validate="'max:5000'"
+                          v-model="inputData.comment">
+                </textarea>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="col-sm-3 col-xs-12">
-                <!-- Action Box -->
-                <div class="box box-warning">
-                    <div class="box-body">
-                        <button type="submit" class="btn btn-block btn-success mr-5">
-                            <i class="fa fa-save mr-5"></i>
-                            {{ $route.name === 'ContractRegist' ? '登録する' : '編集する'}}
-                        </button>
-                        <button @click="$router.go(-1)" type="button" id="reset" name="reset"
-                                class="btn btn-block btn-default">
-                            <i class="fa fa-caret-left"></i>
-                            前の画面に戻る
-                        </button>
-                    </div>
+
+        </div>
+        <div class="col-sm-3 col-xs-12">
+            <!-- Action Box -->
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Action</h3>
+                </div>
+
+                <div class="box-body">
+                    <button @click="submit" type="button" class="btn btn-block btn-success" :disabled="!canSubmit">
+                        <i class="fa fa-save"></i>
+                        {{ formAction === 'edit' ? 'Update' : 'Register' }}
+                    </button>
+
+                    <button @click="handleCancel" type="button" class="btn btn-block btn-default">
+                        <i class="fa fa-caret-left"></i>
+                        Back
+                    </button>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 </template>
 
 <script>

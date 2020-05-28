@@ -38,4 +38,14 @@ class Category extends BaseModel
     {
         return $this->children()->with('allChildren');
     }
+
+    public function created_user()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function updated_user()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
 }

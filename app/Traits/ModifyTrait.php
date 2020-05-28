@@ -15,13 +15,11 @@ trait ModifyTrait
      */
     private static function currentUser()
     {
-//        if (request()->bearerToken()) {
-//            $user = auth('admin')->user() ? auth('admin')->user() : auth('account')->user();
-//
-//            return $user->getTable().'.'.$user->id ?? 0;
-//        } else {
-//            return 'server.0';
-//        }
+        if (request()->bearerToken()) {
+            $user = auth()->user();
+
+            return $user->id ?? null;
+        }
     }
 
     /**

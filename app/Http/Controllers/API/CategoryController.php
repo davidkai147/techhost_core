@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Models\Category;
 use App\Services\CategoryService;
+use App\Services\ResponseService;
 use App\Traits\CRUDTrait;
 use App\Transformers\CategoryTransformer;
 use Illuminate\Http\JsonResponse;
@@ -12,10 +13,12 @@ use Illuminate\Http\Request;
 class CategoryController extends ApiBaseController
 {
     protected $categoryService;
-    public function __construct(Request $request, CategoryService $categoryService)
+    private $responseService;
+    public function __construct(Request $request, CategoryService $categoryService, ResponseService $responseService)
     {
         parent::__construct($request);
         $this->categoryService = $categoryService;
+        $this->responseService = $responseService;
     }
 
     /**
@@ -48,11 +51,13 @@ class CategoryController extends ApiBaseController
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $content = Category::query()->create($request->all());
+        $msg = 'Insert ok';
+        return $this->responseService->json($msg, 200, 200);
     }
 
     /**

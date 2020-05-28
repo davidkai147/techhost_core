@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="box-body">
-            <table id="contractTable" class="table table-bordered table-hover">
+            <table id="categoryTable" class="table table-bordered table-hover">
                 <thead>
                 <tr>
                     <th class="text-center"><input type="checkbox" name="selectedItems" /></th>
@@ -19,17 +19,17 @@
                     <tr v-for="item in list" :key="item.id">
                         <td class="text-center"><input type="checkbox" name="selectedItems" /></td>
                         <td><p>{{ item.name }}</p></td>
-                        <td><p>{{ item.description }}</p></td>
-                        <td><el-button type="success" plain>{{ item.status }}</el-button></td>
-                        <td><p>{{ item.is_featured }}</p></td>
-                        <td><p>{{ item.ordering }}</p></td>
-                        <td><p>{{ item.is_default }}</p></td>
+                        <td width="30%"><p>{{ item.description }}</p></td>
+                        <td class="text-center"><el-button type="success" plain>{{ item.status }}</el-button></td>
+                        <td class="text-center"><p>{{ item.is_featured }}</p></td>
+                        <td class="text-center"><p>{{ item.ordering }}</p></td>
+                        <td class="text-center"><p>{{ item.is_default }}</p></td>
                         <td class="text-center">{{item.latest_at}}</td>
                         <td class="text-center col-xs-2">
                             <router-link :to="{ name: 'CategoryEdit', params: { id: item.id }}">
-                                <el-button type="primary" icon="el-icon-edit"></el-button>
+                                <el-button type="primary" icon="el-icon-edit">Edit</el-button>
                             </router-link>
-                            <el-button @click="handleDelete(item.id)" type="danger" icon="el-icon-delete"></el-button>
+                            <el-button @click="handleDelete(item.id)" type="danger" icon="el-icon-delete">Delete</el-button>
                         </td>
                     </tr>
                 </tbody>

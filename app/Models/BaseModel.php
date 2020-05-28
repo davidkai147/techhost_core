@@ -35,7 +35,7 @@ class BaseModel extends Model
      * @param string $format
      * @return false|string|null
      */
-    public function convertDate($date, $format = 'Y-m-d H:i:s')
+    public function convertDate($date, $format = 'd-m-Y H:i:s')
     {
         if (! empty($date)) {
             return Date($format, strtotime($date));

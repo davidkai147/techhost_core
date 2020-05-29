@@ -2,6 +2,7 @@ import axios from 'axios/index'
 import {AuthService} from '../api/service/auth.service'
 import {Cookie} from '../util/cookie'
 import store from "../store"
+import { Message } from 'element-ui'
 
 const axiosInstance = axios.create({
     baseURL: '/api',
@@ -45,6 +46,12 @@ axiosInstance.interceptors.response.use(
         if (status === 401) {
             return window.location.href = window.location.origin + '/cms/signin'
         }
+
+        if (status === 500) {
+            Message.error('処理に失敗しました。管理者にお問い合わせください。')
+            return AuthService.logout().then(() => window.location.href = window.location.origin + '/cms/signin')
+        }
+
         return Promise.reject(error)
     },
 )

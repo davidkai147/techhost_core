@@ -16,7 +16,7 @@ class CategoryService extends BaseService
 
     }
 
-    public function get(Category $category)
+    public function getPaginate(Category $category)
     {
         $category = $category->with('allChildren','created_user','updated_user')->whereNull('parent_id');
         return $category;

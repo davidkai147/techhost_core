@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Requests\Category\CategoryRequest;
 use App\Models\Category;
 use App\Services\CategoryService;
 use App\Services\ResponseService;
 use App\Traits\CRUDTrait;
 use App\Transformers\CategoryTransformer;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CategoryController extends ApiBaseController
 {
@@ -32,7 +35,7 @@ class CategoryController extends ApiBaseController
     {
         // Day la code tay
         //$category = $category->with("allChildren")->whereNull('parent_id');
-        $category = $this->categoryService->get($category);
+        $category = $this->categoryService->getPaginate($category);
         $category = $category->paginate($this->perPage);
         return $this->ok($category, CategoryTransformer::class);
     }
@@ -40,7 +43,7 @@ class CategoryController extends ApiBaseController
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -50,10 +53,10 @@ class CategoryController extends ApiBaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @param CategoryRequest $request
+     * @return ResponseFactory|Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
         $content = Category::query()->create($request->all());
         $msg = 'Insert ok';
@@ -77,7 +80,7 @@ class CategoryController extends ApiBaseController
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit($id)
     {
@@ -89,7 +92,7 @@ class CategoryController extends ApiBaseController
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, $id)
     {
@@ -100,7 +103,7 @@ class CategoryController extends ApiBaseController
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {

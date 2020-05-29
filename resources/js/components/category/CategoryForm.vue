@@ -1,5 +1,5 @@
 <template>
-    <ValidationObserver v-slot="{ handleSubmit }">
+    <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
     <form @submit.prevent="handleSubmit(submit)" class="form-horizontal">
         <div class="row">
             <div class="col-xs-12 col-sm-9">
@@ -191,9 +191,16 @@
                             this.$router.push({name: 'Category'})
                         })
                     }
-                } catch(e) {
-                    this.canSubmit = true
-                    this.$message.error(e.response.data.message)
+                } catch(err) {
+                    if (err.response.data && err.response.data.errors) {
+                        _.forEach(err.response.data.errors, (item, field) => {
+                            this.canSubmit = true
+                            _.pickBy(this.$refs.observer.errors, (value, key) => {
+                                if (field === key) value.push(item[0])
+                            })
+
+                        })
+                    }
                 }
             }
         },

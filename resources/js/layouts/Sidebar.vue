@@ -21,24 +21,26 @@
                         <span>Dashboard</span>
                     </a>
                 </router-link>
-                <router-link tag="li" active-class="active disabled" :to="{name: 'SignIn'}" class="treeview">
+                <li class="treeview">
                     <a>
-                        <i class="fa fa-dashboard"></i>
-                        <span>Users</span>
+                        <i class="fa fa-database"></i>
+                        <span>Users management</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
                     </a>
-                </router-link>
-                <router-link tag="li" active-class="active disabled" :to="{name: 'SignIn'}" class="treeview">
-                    <a>
-                        <i class="fa fa-dashboard"></i>
-                        <span>Permissions</span>
-                    </a>
-                </router-link>
-                <router-link tag="li" active-class="active disabled" :to="{name: 'SignIn'}" class="treeview">
-                    <a>
-                        <i class="fa fa-dashboard"></i>
-                        <span>Roles</span>
-                    </a>
-                </router-link>
+                    <ul class="treeview-menu">
+                        <router-link tag="li" active-class="active disabled" :to="{name: 'SignIn'}" class="treeview">
+                            <a><i class="fa"></i> Users list</a>
+                        </router-link>
+                        <router-link tag="li" active-class="active" :to="{name: 'SignIn'}">
+                            <a><i class="fa"></i> Permissions</a>
+                        </router-link>
+                        <router-link tag="li" active-class="active" :to="{name: 'SignIn'}">
+                            <a><i class="fa"></i> Roles</a>
+                        </router-link>
+                    </ul>
+                </li>
                 <router-link tag="li" active-class="active disabled" :to="{name: 'Category'}" class="treeview">
                     <a>
                         <i class="fa fa-dashboard"></i>

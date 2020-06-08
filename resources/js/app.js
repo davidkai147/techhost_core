@@ -23,10 +23,12 @@ window.Vue = Vue
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 import App from './App.vue'
+import { i18n } from './plugins/i18n.js'
 
 import './plugins/chartjs';
 import './plugins/vue-cookies';
 
+Vue.config.productionTip = false
 
 // import VeeValidate
 import va_ja from './locale/validate_jp'
@@ -58,7 +60,9 @@ router.beforeEach((to, from, next) => {
     // eg. if we have /some/deep/nested/route and /some, /deep, and /nested have titles, nested's will be chosen.
     const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title)
     // If a route with a title was found, set the document (page) title to that value.
-    if (nearestWithTitle) document.title = `TechHost CMS | ${nearestWithTitle.meta.title}`
+    i18n.locale = 'vi';
+    const messageTitle = i18n.t(nearestWithTitle.meta.title)
+    if (nearestWithTitle) document.title = `TechHost CMS | ${messageTitle}`
 
     if (!to.name) {
         next({name: 'PageNotFound'})
@@ -74,6 +78,7 @@ router.beforeEach((to, from, next) => {
 
 const app = new Vue({
     el: '#app',
+    i18n,
     router,
     store,
 })

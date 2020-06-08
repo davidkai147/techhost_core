@@ -7,7 +7,7 @@ export default {
     name: 'SignIn',
     component: SignIn,
     meta: {
-        title: 'SignIn'
+        title: 'login.title'
     },
     beforeEnter: multiguard([LoginGuard]),
 }

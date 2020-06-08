@@ -8,7 +8,7 @@
                     <img src="../assets/noavatarn.png" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info w-170">
-                    <p class="long-and-truncated">{{currentUser.name}}</p>
+                    <p class="long-and-truncated">{{ $t('greeting') }}, {{currentUser.name}}</p>
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>

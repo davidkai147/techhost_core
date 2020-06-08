@@ -5,7 +5,7 @@
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
-            <p class="login-box-msg">Please input your email and password</p>
+            <p class="login-box-msg">{{ $t('login.login_box') }}</p>
 
             <ValidationObserver v-slot="{ handleSubmit }">
                 <form @submit.prevent="handleSubmit(submit)">
@@ -15,7 +15,7 @@
                                 type="text"
                                 class="form-control"
                                 id="email"
-                                placeholder="example@gmail.com"
+                                :placeholder="$t('login.email_placeholder')"
                                 name="ログインID"
                                 v-model="inputData.email">
                             <span class="fa fa-user form-control-feedback"></span>
@@ -31,7 +31,7 @@
                                 type="password"
                                 class="form-control"
                                 id="password"
-                                placeholder="Please input password"
+                                :placeholder="$t('login.password_placeholder')"
                                 name="ログインパスワード"
                                 v-model="inputData.password">
                             <span class="fa fa-user form-control-feedback"></span>
@@ -41,7 +41,7 @@
                         </div>
                     </ValidationProvider>
 
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">Login</button>
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">{{ $t('login.login_button') }}</button>
                     <div class="row">
                         <div class="col-xs-12">
                         </div>

@@ -2,18 +2,76 @@
 
 namespace App\Models;
 
-use App\Traits\ModifyTrait;
-use App\Traits\UuidTrait;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Builders\Auth\UserBuilder;
+use App\Interfaces\AuthInterface;
+use App\Traits\HasModify;
+use App\Traits\HasUuid;
+use App\Traits\OverridesBuilder;
+use App\Traits\ParseDateToTimestamp;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
+use Models\Users;
+use phpDocumentor\Reflection\Types\This;
+use Spatie\Permission\Traits\HasRoles;
+use App\Traits\EncryptUser;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable implements JWTSubject, AuthInterface
 {
+    use ParseDateToTimestamp;
     use Notifiable;
-    //use UuidTrait;
-    use ModifyTrait;
+    use HasUuid;
+    use HasRoles;
+    use OverridesBuilder;
+    use HasModify;
+    use EncryptUser;
+
+    public function isAdmin(): bool
+    {
+        return false;
+    }
+
+    public function provideCustomBuilder()
+    {
+        return UserBuilder::class;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    /**
+     * Get the unique identifier for the user.
+     *
+     * @return mixed
+     */
+    public function getAuthIdentifier()
+    {
+        return 'login_id';
+    }
+
+    /**
+     * Get the password for the user.
+     *
+     * @return string
+     */
+    public function getAuthPassword()
+    {
+        return $this->login_password;
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -21,7 +79,28 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'id',
+        'company_id',
+        'prefecture_id',
+        'login_id',
+        'login_password',
+        'user_number',
+        'nickname',
+        'birthday',
+        'gender',
+        'post_code',
+        'city_name',
+        'address',
+        'mail',
+        'tel',
+        'is_active',
+        'is_deleted',
+        'created_at',
+        'created_by',
+        'updated_at',
+        'updated_by',
+        'deleted_at',
+        'deleted_by',
     ];
 
     /**
@@ -30,7 +109,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'login_password',
     ];
 
     /**
@@ -39,28 +118,74 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        //
     ];
+    public $timestamps = false;
 
-    public function getJWTIdentifier()
+    /**
+     * Check if the value already exists in the database
+     *
+     * @param  string $mail User number
+     * @param  string $uid  Primary key
+     *
+     * @return bool
+     */
+    public static function doesUserNumberExist($number, $uid = '')
     {
-        return $this->getKey();
-    }
+        $query = self::whereRaw(
+            'AES_DECRYPT(user_number, ?) = ?',
+            [config('applican.encrypt_keyword'), $number]
+        );
 
-    public function getJWTCustomClaims()
-    {
-        return ['tpe' => 'web'];
+        // For editing
+        if ($uid) {
+            $query->where('id', '!=', $uid);
+        }
+
+        return $query->exists();
     }
 
     /**
-     * Create latest_at column
+     * Generaete random numbers
+     *
+     * @param  integer $length Number of digits
      *
      * @return string
      */
-    public function getLatestAtAttribute()
+    public static function generateRandamNumCode($length = 10)
     {
-        $latest_at = $this->created_at >= $this->updated_at ? $this->created_at : $this->updated_at;
+        while (true) {
+            $max  = pow(10, $length) - 1;
+            $rand = random_int(0, $max);
+            $code = sprintf('%0'. $length. 'd', $rand);
+            $res = User::doesUserNumberExist($code);
+            if (!$res) {
+                break;
+            }
+        }
 
-        return Date('Y-m-d H:i:s', strtotime($latest_at));
+        return $code;
+    }
+
+    // ======================================================================
+    // Relationships
+    // ======================================================================
+
+    /**
+     * User belongsTo Company
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function company(){
+        return $this->belongsTo(Company::class);
+    }
+
+    /**
+     * User belongsTo Prefecture
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function prefecture(){
+        return $this->belongsTo(Prefecture::class);
     }
 }

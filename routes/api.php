@@ -14,29 +14,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/unauthenticated', 'HomeController@unauthenticated')->name('unauthenticated');
-
-Route::group(['prefix' => 'auth'], function () {
-    Route::get('login', 'AuthController@before_login')->name('login');
-    Route::post('login', 'AuthController@login');
-
-    Route::middleware('jwt.auth')->group(function () {
-        Route::get('refresh', 'AuthController@refresh');
-        Route::get('user', 'AuthController@user');
-        Route::get('logout', 'AuthController@logout');
-    });
+Route::prefix('auth')->group(function () {
+    Route::post('{guard}/login', [AuthController::class, 'login']);
+    Route::delete('{guard}/logout', [AuthController::class, 'logout']);
+    Route::get('{guard}/refresh', [AuthController::class, 'refresh']);
+    Route::get('profile', [ProfileController::class, 'show']);
+    Route::put('profile', [ProfileController::class, 'update']);
 });
 
-// For main
-Route::group(['middleware' => 'jwt.auth'], function () {
-    Route::namespace('API')->group(function () {
-        Route::resource('categories', 'CategoryController');
-    });
-});
-
-// For super admin
-Route::group(['prefix' => 'sa', 'middleware' => ['jwt.auth', 'role.sa']], function () {
-    Route::namespace('API')->group(function () {
-
-    });
+Route::middleware('auth:admin,user')->group(function () {
+    /*Admin Resource*/
+    Route::apiResource('admins', AdminController::class);
+    Route::apiResource('posts', PostController::class);
+    Route::apiResource('permissions', PermissionController::class);
+    Route::apiResource('roles', RoleController::class);
+    Route::apiResource('news', NewsController::class);
+    Route::apiResource('roles.permissions', PermissionRoleController::class)->only('index', 'store');
+    Route::apiResource('admins.roles', AdminRoleController::class)->only('store');
 });

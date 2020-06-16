@@ -14,9 +14,9 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
 </head>
-<body class="hold-transition sidebar-mini login-page skin-blue">
+<body>
 
-<div id="app" class="position-relative">
+<div id="app">
     <App></App>
 </div>
 

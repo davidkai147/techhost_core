@@ -11,7 +11,6 @@ use App\Traits\ParseDateToTimestamp;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
-use Models\Users;
 use phpDocumentor\Reflection\Types\This;
 use Spatie\Permission\Traits\HasRoles;
 use App\Traits\EncryptUser;
@@ -60,7 +59,7 @@ class User extends Authenticatable implements JWTSubject, AuthInterface
      */
     public function getAuthIdentifier()
     {
-        return 'login_id';
+        return 'email';
     }
 
     /**
@@ -70,7 +69,7 @@ class User extends Authenticatable implements JWTSubject, AuthInterface
      */
     public function getAuthPassword()
     {
-        return $this->login_password;
+        return $this->password;
     }
 
     /**
@@ -80,21 +79,20 @@ class User extends Authenticatable implements JWTSubject, AuthInterface
      */
     protected $fillable = [
         'id',
-        'company_id',
-        'prefecture_id',
-        'login_id',
-        'login_password',
+        'name',
+        'email',
+        'password',
         'user_number',
-        'nickname',
         'birthday',
         'gender',
         'post_code',
         'city_name',
         'address',
-        'mail',
         'tel',
         'is_active',
         'is_deleted',
+        'email_verified_at',
+        'remember_token',
         'created_at',
         'created_by',
         'updated_at',
@@ -109,7 +107,7 @@ class User extends Authenticatable implements JWTSubject, AuthInterface
      * @var array
      */
     protected $hidden = [
-        'login_password',
+        'password',
     ];
 
     /**
@@ -134,7 +132,7 @@ class User extends Authenticatable implements JWTSubject, AuthInterface
     {
         $query = self::whereRaw(
             'AES_DECRYPT(user_number, ?) = ?',
-            [config('applican.encrypt_keyword'), $number]
+            [config('techhost.encrypt_keyword'), $number]
         );
 
         // For editing
@@ -152,7 +150,7 @@ class User extends Authenticatable implements JWTSubject, AuthInterface
      *
      * @return string
      */
-    public static function generateRandamNumCode($length = 10)
+    public static function generateRandomNumCode($length = 10)
     {
         while (true) {
             $max  = pow(10, $length) - 1;

@@ -21,20 +21,20 @@ class AdminFilter extends Filter
 
 
     /**
-     * Filter admin by login_id
+     * Filter admin by email
      *
-     * @param $login_id
+     * @param $email
      * @return \App\Builders\Builder
      */
-    public function login_id($login_id)
+    public function email($email)
     {
-        return $this->query->whereLike('login_id', $login_id);
+        return $this->query->whereLike('email', $email);
     }
 
     /**
      * Filter admin by admin_group_id
      *
-     * @param $login_id
+     * @param $email
      * @return \App\Builders\Builder
      */
     public function admin_group_id($admin_group_id)

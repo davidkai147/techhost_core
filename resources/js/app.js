@@ -24,6 +24,8 @@ window.Vue = Vue
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 import App from './App.vue'
 import { i18n } from './plugins/i18n.js'
+import Antd from 'ant-design-vue';
+import 'ant-design-vue/dist/antd.css';
 
 import './plugins/chartjs';
 import './plugins/vue-cookies';
@@ -43,6 +45,7 @@ localize('ja', va_ja)
 import ElementUI from 'element-ui'
 import el_ja from 'element-ui/lib/locale/lang/ja'
 
+Vue.use(Antd);
 Vue.use(ElementUI, { locale: el_ja })
 
 Vue.config.productionTip = false

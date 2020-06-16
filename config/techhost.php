@@ -10,5 +10,6 @@ return [
         'sa' => 'super-admin',
         'ad' => 'admin',
         'user' => 'user'
-    ]
+    ],
+    'encrypt_keyword' => env('ENCRYPT_KEYWORD')
 ];

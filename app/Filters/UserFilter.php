@@ -18,18 +18,18 @@ class UserFilter extends Filter
      */
     public function nickname($nickname)
     {
-        return $this->query->whereRaw("AES_DECRYPT(nickname, '".config('applican.encrypt_keyword')."') like '%".$nickname."%'");
+        return $this->query->whereRaw("AES_DECRYPT(nickname, '".config('techhost.encrypt_keyword')."') like '%".$nickname."%'");
     }
 
     /**
-     * Filter user by login_id
+     * Filter user by email
      *
-     * @param $login_id
+     * @param $email
      * @return \App\Builders\Builder
      */
-    public function login_id($login_id)
+    public function email($email)
     {
-        return $this->query->whereRaw("AES_DECRYPT(login_id, '".config('applican.encrypt_keyword')."') like '%".$login_id."%'");
+        return $this->query->whereRaw("AES_DECRYPT(email, '".config('techhost.encrypt_keyword')."') like '%".$email."%'");
     }
 
     /**

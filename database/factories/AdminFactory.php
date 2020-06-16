@@ -2,9 +2,8 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Models\User;
-use App\Models\Company;
-use App\Models\Prefecture;
+use App\Models\Admin;
+use App\Models\AdminGroups;
 use Faker\Generator as Faker;
 
 /*
@@ -18,11 +17,11 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(User::class, function (Faker $faker) {
+$factory->define(Admin::class, function (Faker $faker) {
+
     return [
-        'email'         => $faker->unique()->userName,
+        'email'         => $faker->unique()->email,
         'password'      => 'password',
-        'user_number'   => $faker->unique()->numberBetween(1111111111,9999999999),
         'birthday'      => $faker->unixTime,
         'gender'        => rand(1,3),
         'post_code'     => $faker->postcode,

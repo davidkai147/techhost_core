@@ -1,137 +1,72 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
+use App\Enums\Auth\GuardType;
+use App\Requests\Auth\LoginRequest;
 use App\Services\AuthService;
-use App\Services\BaseService;
-use App\Services\ResponseService;
-use Illuminate\Contracts\Routing\ResponseFactory;
+use Flugg\Responder\Exceptions\Http\PageNotFoundException;
+use Flugg\Responder\Http\Responses\SuccessResponseBuilder;
+use Flugg\Responder\Serializers\NoopSerializer;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Hash;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Validation\ValidationException;
 
-class AuthController extends Controller
+class AuthController extends ApiController
 {
-    private $authService;
+    protected $guard;
+    protected $authService;
 
-    private $responseService;
-
-    private $baseService;
-
-    /**
-     * AuthController constructor.
-     *
-     * @param AuthService $authService
-     * @param ResponseService $responseService
-     * @param BaseService $baseService
-     */
-    public function __construct(AuthService $authService, ResponseService $responseService, BaseService $baseService) {
-        $this->authService = $authService;
-        $this->responseService = $responseService;
-        $this->baseService = $baseService;
-    }
-
-    /**
-     * GET: api/auth/login
-     * show login form
-     */
-    public function before_login()
+    public function __construct(AuthService $authService)
     {
-        if (auth()->user()) {
-            $success = true;
-            $msg = 'OK!';
-            $status = 200;
-        } else {
-            $success = false;
-            $msg = 'ERROR!';
-            $status = 400;
-        }
-
-        return response()->json([
-            'success' => $success,
-            'message' => $msg,
-        ], $status);
+        $this->authService = $authService;
+        $this->middleware('auth:admin,user')->except('login', 'refresh');
     }
 
     /**
      * @param Request $request
-     * @return ResponseFactory|Response
      */
-    public function login(Request $request)
+    private function checkGuard(Request $request)
     {
-        $data = $request->all();
-        // authenticate to login
-        list($userAuth, $guard) = $this->authService->getAuth($data['email'], true);
-        if (! empty($userAuth)) {
-            // check password
-            if (Hash::check($data['password'], $userAuth->password)) {
-                auth($guard)->login($userAuth);
-
-                if ($token = JWTAuth::fromUser($userAuth)) {
-                    $accessToken = compact('token');
-
-                    $dataAuth = $this->authService->dataAuthenticated($accessToken['token']);
-
-                    // setup cookie
-                    $cookieToken = $this->baseService->setCookie($dataAuth['access_token']);
-                    $cookieType = $this->baseService->setCookie($dataAuth['typeAuth'], 'type');
-
-                    return response($dataAuth)->withCookie($cookieToken)->withCookie($cookieType);
-                }
-            }
-        }
-
-        $msg = 'ログインIDまたはログインパスワードが違います。';
-
-        return $this->responseService->json($msg, 400, 400);
-    }
-
-    /**
-     * Get the authenticated User
-     */
-    public function user()
-    {
-        $typeAuth = $this->authService->getGuard();
-        $user = auth($typeAuth)->user();
-        if (!empty($user)) {
-            $type = $user->type;
-            $extend = ['typeAuth' => $type];
-
-            return $this->responseService->json('OK!', 200, 200, $user, $extend);
-        } else {
-            return $this->responseService->json('Token has expired', 200, 401);
+        $this->guard = $request->route('guard');
+        if (!in_array($this->guard, GuardType::getValues())) {
+            throw new PageNotFoundException();
         }
     }
 
     /**
-     * Refresh token the authenticated User
+     * @param LoginRequest $request
+     * @return SuccessResponseBuilder|JsonResponse
      */
-    public function refresh()
+    public function login(LoginRequest $request)
     {
-        $accessToken = auth()->refresh();
-        $dataAuth = $this->authService->dataAuthenticated($accessToken);
+        $this->checkGuard($request);
+        $credentials = $request->validated();
+        $result = $this->authService->executeLogin($credentials, $this->guard);
+        return $this->setSerializer(NoopSerializer::class)->httpCreated($result);
+    }
 
-        // setup cookie
-        $cookieToken = $this->baseService->setCookie($accessToken);
-        $cookieType = $this->baseService->setCookie($dataAuth['typeAuth'], 'type');
 
-        return response($dataAuth)->withCookie($cookieToken)->withCookie($cookieType);
+    /**
+     * @param Request $request
+     * @return SuccessResponseBuilder|JsonResponse
+     */
+    public function logout(Request $request)
+    {
+        $this->checkGuard($request);
+        jwt_guard($this->guard)->logout(true);
+        return $this->httpNoContent();
     }
 
     /**
-     * @return ResponseFactory|Response
+     * @param Request $request
+     * @return SuccessResponseBuilder|JsonResponse
      */
-    public function logout()
+    public function refresh(Request $request)
     {
-        auth()->logout(true);
-
-        // remove cookie
-        $cookieToken = \Cookie::forget('access_token');
-        $cookieType = \Cookie::forget('type');
-
-        $json = ['message' => 'ログアウトしました。'];
-
-        return response($json)->withCookie($cookieToken)->withCookie($cookieType);
+        $this->checkGuard($request);
+        $result = $this->authService->executeRefreshToken($this->guard);
+        return $this->setSerializer(NoopSerializer::class)->httpCreated($result);
     }
 }

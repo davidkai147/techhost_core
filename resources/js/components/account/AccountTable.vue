@@ -15,7 +15,7 @@
                 <tr v-for="(item, index) in list" :key="index">
                     <td><p>{{ item.contract ? item.contract.contract_name : ' ' }}</p></td>
                     <td class="text-center">{{ item.account_name }}</td>
-                    <td class="text-center">{{ item.login_id }}</td>
+                    <td class="text-center">{{ item.email }}</td>
                     <td class="text-center">{{item.latest_at}}</td>
                     <td class="text-center col-xs-2">
                         <router-link class="btn btn-xs btn-primary" tag="li"

@@ -2,70 +2,58 @@
 
 namespace App\Services;
 
-use App\Models\Account;
-use App\Models\Admin;
-use App\Models\User;
+use Carbon\Carbon;
+use Flugg\Responder\Exceptions\Http\UnauthenticatedException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
-class AuthService
+class AuthService extends UnauthenticatedException
 {
-    /**
-     * AuthService constructor.
-     */
-    public function __construct()
-    {
-    }
-
-    public function getGuard()
-    {
-        if (auth(config('techhost.guard.sa'))->check()) {
-            return config('techhost.guard.sa');
-        } else if (auth(config('techhost.guard.ad'))->check()) {
-            return config('techhost.guard.ad');
-        }
-        return config('techhost.guard.user');
-    }
-
-    public function getAuth($email, $getGuard = null)
-    {
-        $guard = 'web';
-
-        // check with Admin table
-        $auth = User::query()->where('email', $email)->first();
-        if (!empty($auth)) {
-            switch ($auth->type) {
-                case config('techhost.user_type.sa') :
-                    $guard = config('techhost.guard.sa');
-                    break;
-                case config('techhost.user_type.ad') :
-                    $guard = config('techhost.guard.ad');
-                    break;
-            }
-        }
-
-        return !empty($getGuard) ? [$auth, $guard] : $auth;
-    }
-
-    public function getCurrentUser()
-    {
-        $guard = $this->getGuard();
-        return auth($guard)->user();
-    }
+    protected $errorCode;
 
     /**
-     * @param $token
-     * @return mixed
+     * @param array $credentials
+     * @param string|null $guard
+     * @return array
      */
-    public function dataAuthenticated($token)
+    public function executeLogin(array $credentials, string $guard = null): array
     {
-        $guard = $this->getGuard();
-        $type = auth($guard)->user()->type;
+        if (!$token = jwt_guard($guard)->attempt([
+            'email' => $credentials['email'],
+            'password' => $credentials['password']
+        ])) {
+            $message = new UnauthenticatedException(trans('auth.failed'));
+            $message->errorCode = '401';
+            throw $message;
+        }
+        if (jwt_guard($guard)->user()->is_deleted){
+            $message = new UnauthenticatedException(trans('auth.failed'));
+            $message->errorCode = '401';
+            throw $message;
+        }
+        jwt_guard($guard)->setToken($token);
         return [
-            'code' => 200,
-            'message' => 'OK!',
-            'typeAuth' => $type,
-            'data' => auth($guard)->user(),
-            'access_token' => $token,
-            'token_type' => 'Bearer',
+            'token' => $token,
+            'exp' => Carbon::parse(jwt_guard($guard)->getPayload()->get('exp'))
+        ];
+    }
+
+    public function executeRefreshToken(string $guard = null)
+    {
+        try {
+            $token = jwt_guard($guard)->refresh(true);
+            jwt_guard($guard)->setToken($token);
+        } catch (TokenExpiredException $exception) {
+            throw new BadRequestHttpException('Token Expired');
+        } catch (TokenInvalidException $exception) {
+            throw new BadRequestHttpException('Token Invalid');
+        }
+        return [
+            'token' => $token,
+            'exp' => Carbon::parse(
+                jwt_guard($guard)->getPayload()->get('exp')
+            )
         ];
     }
 }

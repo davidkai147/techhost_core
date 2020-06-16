@@ -1,13 +1,16 @@
 <?php
 namespace App\Exceptions;
+use Flugg\Responder\Exceptions\ConvertsExceptions;
+use Flugg\Responder\Exceptions\Http\HttpException;
+use Flugg\Responder\Exceptions\Http\UnauthenticatedException;
 use Throwable;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class CustomHandler extends ExceptionHandler
 {
+    use ConvertsExceptions;
     /**
      * A list of the exception types that should not be reported.
      *
@@ -41,7 +44,7 @@ class CustomHandler extends ExceptionHandler
             return $this->render_token_not_provider();
 
         // PLEASE ADD THIS LINES
-        if ($exception instanceof UnauthorizedHttpException) {
+        if ($exception instanceof UnauthenticatedException) {
 
             $preException = $exception->getPrevious();
             if ($preException instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
@@ -52,6 +55,10 @@ class CustomHandler extends ExceptionHandler
             }
             else if ($preException instanceof \Tymon\JWTAuth\Exceptions\TokenBlacklistedException) {
                 return $this->render_token_blacklisted();
+            }
+            else if ($request->is('api/*') && $exception instanceof HttpException) {
+                $this->convertDefaultException($exception);
+                return $this->renderResponse($exception);
             }
         }
 

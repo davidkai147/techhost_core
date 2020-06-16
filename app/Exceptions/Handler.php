@@ -2,27 +2,27 @@
 
 namespace App\Exceptions;
 
-use Throwable;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Flugg\Responder\Exceptions\ConvertsExceptions;
+use Flugg\Responder\Exceptions\Http\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Response;
-use Illuminate\Validation\ValidationException;
 use Symfony\Component\CssSelector\Exception\InternalErrorException;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use ConvertsExceptions;
     /**
      * A list of the exception types that are not reported.
      *
      * @var array
      */
     protected $dontReport = [
-        \Illuminate\Auth\AuthenticationException::class,
-        \Illuminate\Auth\Access\AuthorizationException::class,
-        \Symfony\Component\HttpKernel\Exception\HttpException::class,
-        \Illuminate\Database\Eloquent\ModelNotFoundException::class,
-        \Illuminate\Validation\ValidationException::class
+         \Illuminate\Auth\AuthenticationException::class,
+         \Illuminate\Auth\Access\AuthorizationException::class,
+         \Symfony\Component\HttpKernel\Exception\HttpException::class,
+         \Illuminate\Database\Eloquent\ModelNotFoundException::class,
+         \Illuminate\Validation\ValidationException::class
     ];
 
     /**
@@ -50,8 +50,8 @@ class Handler extends ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
+     * @param  \Throwable  $exception
+     * @return \Illuminate\Http\JsonResponse
      */
     public function render($request, Throwable $exception)
     {

@@ -57,7 +57,7 @@ class Admin extends Authenticatable implements JWTSubject, AuthInterface
      */
     public function getAuthIdentifier()
     {
-        return 'login_id';
+        return 'email';
     }
 
     /**
@@ -67,7 +67,7 @@ class Admin extends Authenticatable implements JWTSubject, AuthInterface
      */
     public function getAuthPassword()
     {
-        return $this->login_password;
+        return $this->password;
     }
 
     public function provideCustomBuilder()
@@ -81,19 +81,26 @@ class Admin extends Authenticatable implements JWTSubject, AuthInterface
      * @var array
      */
     protected $fillable = [
-            'id',
-            'admin_group_id',
-            'admin_name',
-            'login_id',
-            'login_password',
-            'is_active',
-            'is_deleted',
-            'created_at',
-            'created_by',
-            'updated_at',
-            'updated_by',
-            'deleted_at',
-            'deleted_by'
+        'id',
+        'name',
+        'email',
+        'password',
+        'birthday',
+        'gender',
+        'post_code',
+        'city_name',
+        'address',
+        'tel',
+        'is_active',
+        'is_deleted',
+        'email_verified_at',
+        'remember_token',
+        'created_at',
+        'created_by',
+        'updated_at',
+        'updated_by',
+        'deleted_at',
+        'deleted_by',
     ];
 
     /**
@@ -102,7 +109,7 @@ class Admin extends Authenticatable implements JWTSubject, AuthInterface
      * @var array
      */
     protected $hidden = [
-        'login_password',
+        'password',
     ];
 
     /**
@@ -120,9 +127,9 @@ class Admin extends Authenticatable implements JWTSubject, AuthInterface
     // Accessors & Mutators
     // ======================================================================
 
-    public function setLoginPasswordAttribute($value)
+    public function setPasswordAttribute($value)
     {
-        $this->attributes['login_password'] = bcrypt($value);
+        $this->attributes['password'] = bcrypt($value);
     }
 
     /**

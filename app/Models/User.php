@@ -120,6 +120,15 @@ class User extends Authenticatable implements JWTSubject, AuthInterface
     ];
     public $timestamps = false;
 
+    // ======================================================================
+    // Accessors & Mutators
+    // ======================================================================
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
+
     /**
      * Check if the value already exists in the database
      *

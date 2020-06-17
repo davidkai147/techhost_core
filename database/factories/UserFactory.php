@@ -20,7 +20,8 @@ use Faker\Generator as Faker;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-        'email'         => $faker->unique()->userName,
+        'name'          => $faker->unique()->name,
+        'email'         => $faker->unique()->email,
         'password'      => 'password',
         'user_number'   => $faker->unique()->numberBetween(1111111111,9999999999),
         'birthday'      => $faker->unixTime,
@@ -28,6 +29,7 @@ $factory->define(User::class, function (Faker $faker) {
         'post_code'     => $faker->postcode,
         'city_name'     => $faker->city,
         'address'       => $faker->address,
-        'tel'           => $faker->phoneNumber
+        'tel'           => $faker->phoneNumber,
+        'created_by'    => 'seeder'
     ];
 });

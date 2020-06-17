@@ -17,8 +17,8 @@ trait EncryptUser
     {
         static::addGlobalScope('decrypt', function (UserBuilder $builder) {
             $builder->select('*')
+                    ->selectRaw('AES_DECRYPT(name, ?) AS name', [config('techhost.encrypt_keyword')])
                     ->selectRaw('AES_DECRYPT(email, ?) AS email', [config('techhost.encrypt_keyword')])
-                    ->selectRaw('AES_DECRYPT(password, ?) AS password', [config('techhost.encrypt_keyword')])
                     ->selectRaw('AES_DECRYPT(user_number, ?) AS user_number', [config('techhost.encrypt_keyword')])
                     ->selectRaw('AES_DECRYPT(birthday, ?) AS birthday', [config('techhost.encrypt_keyword')])
                     ->selectRaw('AES_DECRYPT(gender, ?) AS gender', [config('techhost.encrypt_keyword')])
@@ -31,6 +31,17 @@ trait EncryptUser
 
     /*
      *
+     * @param  string $value User name
+     *
+     * @return void
+     */
+    protected function setNameAttribute($value)
+    {
+        $this->attributes['name'] = $this->encrypt($value);
+    }
+
+    /*
+     *
      * @param  string $value User number
      *
      * @return void
@@ -38,30 +49,6 @@ trait EncryptUser
     protected function setUserNumberAttribute($value)
     {
         $this->attributes['user_number'] = $this->encrypt($value);
-    }
-
-    /**
-     * Set the User's login id.
-     *
-     * @param string $value Login id
-     *
-     * @return void
-     */
-    protected function setEmailAttribute($value)
-    {
-        $this->attributes['email'] = $this->encrypt($value);
-    }
-
-    /**
-     * Set the User's password.
-     *
-     * @param string $value Password
-     *
-     * @return void
-     */
-    protected function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = $this->encrypt($value);
     }
 
     /**

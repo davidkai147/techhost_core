@@ -6,32 +6,25 @@
         <!-- /.login-logo -->
         <div class="login-box-body">
             <p class="login-box-msg">{{ $t('login.login_box') }}</p>
-            <ValidationObserver v-slot="{ handleSubmit }">
-                <a-form
-                    id="components-form-demo-normal-login"
-                    class="login-form"
-                    @submit.prevent="handleSubmit(submit)"
-                >
-                    <a-form-item has-feedback validate-status="error" help="Ko dau">
-                        <ValidationProvider name="ログインID" rules="required|email" v-slot="{ errors }">
-                            <a-input :placeholder="$t('login.email_placeholder')" v-model="inputData.email">
-                                <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
-                            </a-input>
-                            <span v-show="errors[0]" :class="{'help-block': errors[0] }">
-                                                                {{ errors[0] }}
-                            </span>
-                        </ValidationProvider>
-                    </a-form-item>
-                    <a-form-item>
-                        <ValidationProvider name="ログインパスワード" rules="required|min:3|max:100" v-slot="{ errors }">
-                            <a-input type="password" :placeholder="$t('login.password_placeholder')" v-model="inputData.password">
-                                <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
-                            </a-input>
-                            <span v-show="errors[0]" :class="{'help-block': errors[0] }">
-                                                                {{ errors[0] }}
-                            </span>
-                        </ValidationProvider>
-                    </a-form-item>
+            <ValidationObserver ref="observer" v-slot="{ passes }">
+                <a-form id="components-form-demo-normal-login" class="login-form">
+                    <InputWithValidation
+                        v-model="inputData.email"
+                        rules="required|email"
+                        v-bind:name="$t('login.email')"
+                        icon="user"
+                        :placeholder="$t('login.email_placeholder')"
+                    />
+                    <InputWithValidation
+                        v-model="inputData.password"
+                        type="password"
+                        rules="required"
+                        v-bind:name="$t('login.password')"
+                        icon="lock"
+                        :placeholder="$t('login.password_placeholder')"
+                        vid="password"
+                    />
+
                     <a-form-item>
                         <a-checkbox>
                             Remember me
@@ -39,7 +32,7 @@
                         <a class="login-form-forgot" href="">
                             Forgot password
                         </a>
-                        <a-button type="primary" html-type="submit" class="login-form-button">
+                        <a-button type="primary" @click="passes(submit)" html-type="submit" class="login-form-button">
                             {{ $t('login.login_button') }}
                         </a-button>
                         Or
@@ -92,17 +85,21 @@
             </ValidationObserver>
         </div>
         <!-- /.login-box-body -->
-        <div class="overlay" :class="{show: isShow}">
-            <img src="../assets/loading.gif" alt="loading">
-        </div>
+            <Loader/>
     </div>
 </template>
 
 <script>
     import {mapActions} from 'vuex'
+    import InputWithValidation from '../components/shared/InputWithValidation'
+    import Loader from '../components/shared/Loader'
 
     export default {
         name: 'SignIn',
+        components: {
+            InputWithValidation,
+            Loader
+        },
         beforeCreate() {
             this.form = this.$form.createForm(this, { name: 'normal_login' });
         },
@@ -112,7 +109,7 @@
                     email: null,
                     password: null,
                 },
-                isShow: false,
+                isShow: true,
             }
         },
         methods: {
@@ -124,12 +121,12 @@
 
                 try {
                     await this.login(data).then((res) => {
-                        this.isShow = false
+                        //this.isShow = false
                         const name = res.typeAuth === 'SUPER_ADMIN' ? 'AdminDashboard' : 'AccountDashboard'
                         this.$router.push({name: name})
                     })
                 } catch (e) {
-                    this.isShow = false
+                    //this.isShow = false
                     this.$message.error(e.response.data.message)
                 }
             }
@@ -145,5 +142,8 @@
     }
     #components-form-demo-normal-login .login-form-button {
         width: 100%;
+    }
+    .has-feedback {
+        margin-bottom: 0px!important;
     }
 </style>

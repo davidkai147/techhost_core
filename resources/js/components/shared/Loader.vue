@@ -1,6 +1,7 @@
 <template>
     <div class="overlay" :class="{show: isShow}">
-        <img src="../../assets/loading.gif" alt="loading">
+<!--        <img src="../../assets/loading.gif" alt="loading">-->
+        <a-spin tip="Loading..." size="large"/>
     </div>
 </template>
 

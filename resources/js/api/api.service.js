@@ -1,5 +1,5 @@
 import axios from 'axios/index'
-import {AuthService} from '../api/service/auth.service'
+import {AuthService} from './service/auth.service'
 import {Cookie} from '../util/cookie'
 import store from "../store"
 import { Message } from 'element-ui'

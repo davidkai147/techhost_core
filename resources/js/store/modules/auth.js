@@ -23,10 +23,8 @@ const actions = {
 
     login({commit}, data) {
         try {
-            return ApiService.post('/auth/login', data).then(resp => {
-                commit('updateUser', resp.data.data)
-                $cookies.set('access_token', resp.data.access_token);
-                $cookies.set('type', resp.data.typeAuth);
+            return ApiService.post('/auth/admin/login', data).then(resp => {
+                $cookies.set('access_token', resp.data.token);
                 return resp.data
             })
         } catch (e) {
@@ -36,10 +34,9 @@ const actions = {
 
     logout({commit}) {
         try {
-            return ApiService.get('/auth/logout').then(resp => {
+            return ApiService.get('/auth/admin/logout').then(resp => {
                 commit('resetUser')
                 $cookies.remove('access_token');
-                $cookies.remove('type');
                 return resp.data
             })
         } catch (e) {
@@ -48,7 +45,7 @@ const actions = {
     },
 
     checkAuth({commit}) {
-        return ApiService.get('/auth/user').then(
+        return ApiService.get('/auth/profile').then(
             (resp) => {
                 commit('updateUser', resp.data.data)
                 return resp.data.data

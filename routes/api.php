@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +20,7 @@ Route::prefix('auth')->group(function () {
     Route::post('{guard}/login', [AuthController::class, 'login']);
     Route::delete('{guard}/logout', [AuthController::class, 'logout']);
     Route::get('{guard}/refresh', [AuthController::class, 'refresh']);
-//    Route::get('profile', [ProfileController::class, 'show']);
+    Route::get('profile', [ProfileController::class, 'show']);
 //    Route::put('profile', [ProfileController::class, 'update']);
 });
 

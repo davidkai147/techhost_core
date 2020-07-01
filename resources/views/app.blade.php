@@ -18,6 +18,17 @@
 
 <div id="app">
     <App></App>
+    <div class="page-loading-warp">
+        <div class="ant-spin ant-spin-lg ant-spin-spinning">
+                <span class="ant-spin-dot ant-spin-dot-spin">
+                    <i class="ant-spin-dot-item"></i>
+                    <i class="ant-spin-dot-item"></i>
+                    <i class="ant-spin-dot-item"></i>
+                    <i class="ant-spin-dot-item"></i>
+                </span>
+            <div class="ant-spin-text">LOADING...</div>
+        </div>
+    </div>
 </div>
 
 <script src="{{ asset('assets/js/app.js') }}"></script>
